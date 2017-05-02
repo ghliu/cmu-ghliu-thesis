@@ -1,0 +1,20 @@
+\BOOKMARK [0][-]{chapter.1}{1 Introduction}{}% 1
+\BOOKMARK [0][-]{chapter.2}{2 Kinodynamic Planning for All-Terrain Vehicle}{}% 2
+\BOOKMARK [0][-]{chapter.3}{3 Deep Inverse Reinforcement Learning}{}% 3
+\BOOKMARK [0][-]{chapter.4}{4 Multimodal Deep Reinforcement Learning}{}% 4
+\BOOKMARK [1][-]{section.4.1}{4.1 Introduction}{chapter.4}% 5
+\BOOKMARK [1][-]{section.4.2}{4.2 Background}{chapter.4}% 6
+\BOOKMARK [2][-]{subsection.4.2.1}{4.2.1 Deep Reinforcement Learning \(DRL\)}{section.4.2}% 7
+\BOOKMARK [2][-]{subsection.4.2.2}{4.2.2 Normalized Advantage Function \(NAF\)}{section.4.2}% 8
+\BOOKMARK [2][-]{subsection.4.2.3}{4.2.3 Deep Deterministic Policy Gradient \(DDPG\)}{section.4.2}% 9
+\BOOKMARK [1][-]{section.4.3}{4.3 Multimodal Deep Reinforcement Learning}{chapter.4}% 10
+\BOOKMARK [2][-]{subsection.4.3.1}{4.3.1 Multimodal Network Architecture}{section.4.3}% 11
+\BOOKMARK [2][-]{subsection.4.3.2}{4.3.2 Sensor Dropout \(SD\)}{section.4.3}% 12
+\BOOKMARK [2][-]{subsection.4.3.3}{4.3.3 Platform Setup}{section.4.3}% 13
+\BOOKMARK [2][-]{subsection.4.3.4}{4.3.4 Results}{section.4.3}% 14
+\BOOKMARK [2][-]{subsection.4.3.5}{4.3.5 Probing through the gradients}{section.4.3}% 15
+\BOOKMARK [1][-]{section.4.4}{4.4 Discussion}{chapter.4}% 16
+\BOOKMARK [2][-]{subsection.4.4.1}{4.4.1 Sensor Dropout v/s traditional Dropout}{section.4.4}% 17
+\BOOKMARK [2][-]{subsection.4.4.2}{4.4.2 Fusion Layer Configurations}{section.4.4}% 18
+\BOOKMARK [2][-]{subsection.4.4.3}{4.4.3 Implementation of NAF with Multi-modal}{section.4.4}% 19
+\BOOKMARK [1][-]{section.4.5}{4.5 Conclusions and Future Work}{chapter.4}% 20

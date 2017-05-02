@@ -1,0 +1,24 @@
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
+\contentsline {chapter}{\numberline {2}Kinodynamic Planning for All-Terrain Vehicle}{3}{chapter.2}
+\contentsline {chapter}{\numberline {3}Deep Inverse Reinforcement Learning}{5}{chapter.3}
+\contentsline {chapter}{\numberline {4}Multimodal Deep Reinforcement Learning}{7}{chapter.4}
+\contentsline {section}{\numberline {4.1}Introduction}{7}{section.4.1}
+\contentsline {section}{\numberline {4.2}Background}{9}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Deep Reinforcement Learning (DRL)}{9}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Normalized Advantage Function (NAF)}{9}{subsection.4.2.2}
+\contentsline {subsection}{\numberline {4.2.3}Deep Deterministic Policy Gradient (DDPG)}{10}{subsection.4.2.3}
+\contentsline {section}{\numberline {4.3}Multimodal Deep Reinforcement Learning}{11}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Multimodal Network Architecture}{11}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Sensor Dropout (SD)}{11}{subsection.4.3.2}
+\contentsline {subsubsection}{Augmenting Experience Replay}{13}{section*.6}
+\contentsline {subsection}{\numberline {4.3.3}Platform Setup}{14}{subsection.4.3.3}
+\contentsline {subsubsection}{TORCS Simulator:}{14}{section*.7}
+\contentsline {subsection}{\numberline {4.3.4}Results}{15}{subsection.4.3.4}
+\contentsline {subsection}{\numberline {4.3.5}Probing through the gradients}{16}{subsection.4.3.5}
+\contentsline {subsubsection}{Dependency metric:}{16}{section*.12}
+\contentsline {subsubsection}{Visualizing weights:}{17}{section*.14}
+\contentsline {section}{\numberline {4.4}Discussion}{18}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}Sensor Dropout v/s \emph {traditional} Dropout}{18}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.2}Fusion Layer Configurations}{19}{subsection.4.4.2}
+\contentsline {subsection}{\numberline {4.4.3}Implementation of NAF with Multi-modal}{19}{subsection.4.4.3}
+\contentsline {section}{\numberline {4.5}Conclusions and Future Work}{20}{section.4.5}
