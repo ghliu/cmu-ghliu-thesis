@@ -209,25 +209,25 @@ $\mathcal{M}^{(k)}_{c_j}$ is an augmented mask encapsulating both dropout and re
     \caption{M-DRL with Sensor Dropout}
     \label{alg:mdrl-algo}
 \begin{algorithmic}
-    \STATE {\bfseries Input:} Initialize DRL Algorithm \textsc{Agent},\\
+    \State {\bfseries Input:} Initialize DRL Algorithm \textsc{Agent},\\
     \qquad \quad State pre-processed network $f(\cdot|\theta)$, \\
     \qquad \quad $N$ network configurations $\mathbb{C}= \left\{c_j\right\}_{j=1~..~N}$,\\
     \qquad \quad $N$-state categorical distribution $\mathbb{P}(X=c_j) = p_j$,
-    \STATE Initialize experience replay buffers $\mathcal{B} = \left\{\mathcal{B}_j\right\}_{j=1~..~N}$
-    \FOR{$episode=1$ {\bfseries to} $Eps$ }
-     \STATE Receive initial state $s_1$
-     \FOR{$t=1$ {\bfseries to} $T$}
-        \STATE $\tilde{s}_t \leftarrow f(s_t|\theta)$
-        \STATE $\hat{s}_t \leftarrow$ \textsc{SensorDropout}$(\tilde{s}_t , c_j)$, where $c_j \sim \mathbb{P}$
-        \STATE $a_t \leftarrow $\textsc{Agent.Act}$(\hat{s}_t)$ 
-        \STATE $r_t,s_{t+1},terminate \leftarrow$ \textsc{Env.Observe}$(s_t, a_t)$ 
-        \STATE $\mathcal{B}_j \leftarrow$ \textsc{Query}$(\mathcal{B},c_j)$
-        \STATE $\mathcal{B}_j.$\textsc{Append}$(s_t, a_t, r_t, s_{t+1})$
-        \STATE \textsc{Agent.Update}$(\mathcal{B}_j)$
+    \State Initialize experience replay buffers $\mathcal{B} = \left\{\mathcal{B}_j\right\}_{j=1~..~N}$
+    \For{$episode=1$ {\bfseries to} $Eps$ }
+     \State Receive initial state $s_1$
+     \For{$t=1$ {\bfseries to} $T$}
+        \State $\tilde{s}_t \leftarrow f(s_t|\theta)$
+        \State $\hat{s}_t \leftarrow$ \textsc{SensorDropout}$(\tilde{s}_t , c_j)$, where $c_j \sim \mathbb{P}$
+        \State $a_t \leftarrow $\textsc{Agent.Act}$(\hat{s}_t)$ 
+        \State $r_t,s_{t+1},terminate \leftarrow$ \textsc{Env.Observe}$(s_t, a_t)$ 
+        \State $\mathcal{B}_j \leftarrow$ \textsc{Query}$(\mathcal{B},c_j)$
+        \State $\mathcal{B}_j.$\textsc{Append}$(s_t, a_t, r_t, s_{t+1})$
+        \State \textsc{Agent.Update}$(\mathcal{B}_j)$
 %        \STATE $t \leftarrow t + 1$
 % 	 \UNTIL{$terminate$ is $true$}
-     \ENDFOR
-    \ENDFOR
+     \EndFor
+    \EndFor
 %    \UNTIL{$t > T_{max}$}
 \end{algorithmic}
 \end{algorithm}
@@ -303,6 +303,7 @@ To assess the degree of generalization of the learned policies, we pick the the 
 		\label{fig:actual_robust_ddpg}
 	\end{subfigure}
 	\caption{Policy Robustness Analysis: Darker lines connects average rewards of leaned policies with accurate sensing while the lighter lines connects the corresponding policies in the face of sensor noise.}
+    \label{fig:actual_robust}
 \end{figure}
 
 % B. Without Noise experiment % 
