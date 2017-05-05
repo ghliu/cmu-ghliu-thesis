@@ -6,6 +6,8 @@
 *.log
 *.lot
 *.out
-*.pdf
 *.toc
 backup/*
+
+*pdf
+!thesis.pdf
