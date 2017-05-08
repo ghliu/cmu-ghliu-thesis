@@ -81,7 +81,7 @@
 
 
 
-
+\DeclareCaptionLabelFormat{andtable}{#1~#2  \&  \tablename~\thetable}
 \DeclareDocumentCommand{\particles}{ O{} O{} O{}}{^{#2}X_{#1}^{#3}}
 % \particle[time][index][section]
 \DeclareDocumentCommand{\particle}{ O{} O{} O{}}{^{#2}x_{#1}^{#3}}
@@ -190,16 +190,16 @@ Devin Schwab
 \chapter{Introduction}
 \subfile{Introduction/intro.tex}
 
-\chapter{Related Work} \label{chap:related_work}
+\chapter{Related Work (Background?)} \label{chap:related_work}
 \subfile{RelatedWork/relatedWork.tex}
 
-\chapter{Kinodynamic Planning for All-Terrain Vehicle} \label{chap:rrtplanner}
+\chapter{Model Predictive Planning} \label{chap:rrtplanner}
 \subfile{RRTPlanner/rrtplanner.tex}
 
 \chapter{Deep Inverse Reinforcement Learning} \label{chap:dirl}
 \subfile{DIRL/dirl.tex}
 
-\chapter{Multimodal Deep Reinforcement Learning} \label{chap:multimodalDRL}
+\chapter{Multimodal End-to-end Learning} \label{chap:multimodalDRL}
 \subfile{MultimodalDRL/multimodalDRL.tex}
 
 % \chapter{Conclusion and Future Work}

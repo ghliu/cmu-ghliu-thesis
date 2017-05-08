@@ -15,6 +15,10 @@ TODO
 
 %% Stochastic Regularization
 
+Stochastic regularization is an active area of research in deep learning made popular by the success of, \textit{Dropout} \cite{dropout}. Following this landmark paper, numerous extensions were proposed  to further generalize this idea such as \textit{Blockout} \cite{blockout}, \textit{DropConnect} \cite{dropconnect}, \textit{Zoneout} \cite{zoneout}, etc. In the similar vein, two interesting techniques have been proposed for specialized regularization in the multi-modal setting namely ModDrop \cite{moddrop} and ModOut \cite{modout}. 
+Given a much wider set of sensors to choose from, ModOut attempts to identify which sensors are actually needed to fully observe the system behavior. This is out of the scope of this work. Here, we assume that all the sensors are critical and we only focus on improving the state information based on inputs from multiple observers. 
+ModDrop is much closer in spirit to the proposed \emph{Sensor Dropout (SD)}. However, unlike ModDrop, pre-training with individual sensor inputs using separate loss functions is not required. A network can be directly constructed in an end-to-end fashion and \emph{Sensor Dropout} can be directly applied at the sensor fusion layer just like Dropout. Its appeal lies in its simplicity during implementation and is designed to be applicable even to the DRL setting. As far as we know, this is the first attempt at applying stochastic regularization in a DRL setting with the spirit of sensor fusion. 
+
 
 
 \end{document}

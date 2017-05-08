@@ -8,7 +8,7 @@ While previous work in DRL predominantly learned policies based on a single inpu
 
 Moreover, we also observe that while a multi-modal policy greatly improves the reward, it might rely heavily on all the inputs to the extent that it may fail completely even if a single sensor broke down fully or partially. This undesirable consequence renders sensor redundancy useless. To ensure that the learned policy does not succumb to such over-fitting, we apply a novel stochastic regularization method called \emph{Sensor Dropout} during training. 
 
-The chapter is organized as follows. Section \ref{sec:mdrl-background} summarizes the background of DRL and two DRL algorithms we extended in this work. Section \ref{sec:mdrl-proposed} introduces multi-modal network architecture, and propose a new stochastic regularization technique called \emph{Sensor Dropout}. The performance of Sensor Dropout is then validated in Section \ref{sec:mdrl-results}. In Section \ref{sec:mdrl-discussion}, we summarize our results and discuss key insights obtained through this exercise. 
+The chapter is organized as follows: Section \ref{sec:mdrl-background} summarizes the background of DRL and two DRL algorithms we extended in this work. Section \ref{sec:mdrl-proposed} introduces multi-modal network architecture, and propose a new stochastic regularization technique called \emph{Sensor Dropout}. The performance of Sensor Dropout is then validated in Section \ref{sec:mdrl-results}. In Section \ref{sec:mdrl-discussion}, we summarize our results and discuss key insights obtained through this exercise. 
 % Finally, Section 6 contains conclusions and ideas for future work. 
 
 \section{Background} \label{sec:mdrl-background}
@@ -311,7 +311,7 @@ In this part, we further validate our hypothesis Sensor Dropout (SD) reduces the
 \caption{Results of the $\mathcal{T}_2^1$ dependency metric.}
 \label{table:policy-ratio}
 \begin{small}
-% \begin{sc}
+\begin{sc}
 % \begin{tabular}{@{}cccccc@{}}
 \begin{tabular}{cccccc}
 \toprule 
@@ -323,7 +323,7 @@ In this part, we further validate our hypothesis Sensor Dropout (SD) reduces the
 \multirow{2}{*}{DDPG} & w/o SD & 1.458 & 1.449 & 1.468 & 1.437 \\
                       & w/ SD  & \textbf{1.168} & \textbf{1.072} & \textbf{1.171} & \textbf{1.120} \\ \toprule
 \end{tabular}
-% \end{sc}
+\end{sc}
 \end{small}
 \end{center}
 \end{table}
