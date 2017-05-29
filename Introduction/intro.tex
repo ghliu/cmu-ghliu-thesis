@@ -7,40 +7,42 @@
 
 %%%  Introduce for Autonomous Driving : Motivation %%%
 
-The rapid urbanization globally in the recent past has led to severe road congestion, rise in pollution levels and an increase in road accidents, therefore presenting a very grim picture of the current state of urban transportation. At the moment, private automobiles are widely recognized as an unsustainable solution for the future of personal urban mobility \cite{reinventing}. Fortunately however, great strides have been made in the development of autonomous driving technologies, energized by the successful demonstrations by some teams at the DARPA Urban Challenge \cite{boss, multimodaltartan}. While offering an opportunity to develop sustainable and safe solutions to personal mobility \cite{usecases_of_AD}, they also hint at a complete overhaul of the urban transportation landscape by ushering in Autonomous Vehicles-on-Demand. 
+% The rapid urbanization globally in the recent past has led to severe road congestion, rise in pollution levels and an increase in road accidents, therefore presenting a very grim picture of the current state of urban transportation. At the moment, private automobiles are widely recognized as an unsustainable solution for the future of personal urban mobility \cite{reinventing}. Fortunately however, great strides have been made in the development of autonomous driving technologies, energized by the successful demonstrations by some teams at the DARPA Urban Challenge \cite{boss, multimodaltartan}. While offering an opportunity to develop sustainable and safe solutions to personal mobility \cite{usecases_of_AD}, they also hint at a complete overhaul of the urban transportation landscape by ushering in Autonomous Vehicles-on-Demand. 
 
-%%% Off-road navigation %%%
+%%% Off-road navigation and traditional motion planner %%%
 
-Although planning in urban environment is a well-studied research field [cite cmu/standard urban challenge paper], and can be efficiently solved with graph-based planner [cite D*] followed by the trajectory optimization techniques [cite standard practical XX]. 
-Motion planning for unmanned ground vehicle on rough terrain has still been an on-going research topics. Built upon the successful of the XXX \cite{}, research 
+Recently, there has been a great stride in the development of autonomous driving technologies, energized by the successful demonstrations by some teams at the DARPA Urban Challenge \cite{boss, multimodaltartan}. In general,
+motion planning in urban environment can be efficiently solved with graph-based planner [cite D*] followed by the trajectory optimization techniques [cite standard practical XX]. 
 
-such as aggressive behavior 
+However, planning for unmanned ground vehicle on rough terrain has been an on-going research topics. 
+One of the main challenges for off-road motion planning come from the fact that the vehicle dynamic in off-road environment is much more unpredictable in contrast to on-road condition. Factor such as wheel-terrain interaction for modeling the sliding effect is still an active research area \todo{cite some papers}. 
+While a simple kinematic model may be enough to tackle motion planning in urban, maneuvering agilely requires a much complex vehicle model. The model naturally comes with a higher dimensional state space representation, and thus breaks down the standard graph-based approach. 
+
+% cite RRT
+An alternative approach is the sample-based planner, which in general is more efficient in solving higher-dimensional state space. 
+Built upon the successful applications on many robotics problems such as manipulations \cite{}, researchers has tried to extend the approach to an aggressive motion planner for off-road vehicle. 
+Behavior 
 such as drifting \cite{}.
 
-One of the main challenges comes from the complexity of the off-road field environment. While a simple kinematic model may be enough to tackle urban environment, maneuvering agile requires a much complex vehicle dynamic model with potentially a higher dimensional state space representation. 
+% can be treated as a well-investigated kinodynamic planning problem in control space, several challenges raised when operating in off-road environment. 
+% Secondly, developing a local planner for high speed operation can be categorized as an anytime planning problem. Thus, computational efficiency should be taken into account for the real-time concern.
 
-and the standard graph-based approach breaks down. Recently, there has been an active focuses on aggressive motion planning with off-road navigation.  
+%%%  Introduce for Autonomous Driving : Alternative learning-based approach %%%
+One of the key challenges to building accurate and robust autonomous navigation systems is to develop a strong intelligence pipeline that is able to efficiently gather incoming sensor data and take suitable control actions with good repeatability and fault-tolerance. In the past, this was addressed in a modular fashion, where  specialized algorithms were developed for each sub-system and finally integrated with some fine tuning. 
 
+More recently, there is great interest in end-to-end approaches that can learn complex mappings that go directly from the input to the output by leveraging the availability of a large volume of task specific data. This approach is purported to perform better since we are optimizing the whole system. 
 
-can be treated as a well-investigated kinodynamic planning problem in control space, several challenges raised when operating in off-road environment. 
-First, the vehicle dynamic in off-road environment is much more unpredictable in contrast to on-road condition. Factor such as wheel-terrain interaction for modeling the sliding effect is still an active research area \todo{cite some papers}. 
-Secondly, developing a local planner for high speed operation can be categorized as an anytime planning problem. Thus, computational efficiency should be taken into account for the real-time concern.
+%%% Introduce Deep Learning and Deep Reinforcement Learning : Motivation on true AI for decision making %%%%%%%%
 
+End-to-end approaches have become more appealing with the use of deep learning in robotics and has been successful in developing visuomotor policies for autonomous driving \cite{deepdriving,nvidiacar,endtoendcars}. However, the traditional deep supervised learning-based driving requires a great deal of human annotation and may not be able to deal with the problem of accumulating errors \cite{ross2011reduction}. On the other hand, deep reinforcement learning (DRL) offers a better formulation that allows policy improvement with feedback, and has been shown to achieve human-level performance on several video games \cite{mnih2013playing, mnih2015human,2016-TOG-deepRL}.
 
-
-
-% \section{Approach}
-
-\section{Planning}
-
-
-\section{The Rise and Challenge of End-to-end Learning}
 
 %%% Deep end-to-end learning %%%
+However, both approaches can be suffered from the approximation of the vehicle model. XXX % TODO
 In the past few years, there is a great interest in applying a more end-to-end approach \cite{deepdriving,nvidiacar,endtoendcars} wherein one can learn a complex mapping that goes directly from the input to the output by leveraging the availability to a large volume of task specific data. More recently, the approach has been pushed one step forward thanks to the success of deep reinforcement learning (DRL), which has shown to achieve human-level performance on many gaming environments \cite{mnih2013playing, mnih2015human,2016-TOG-deepRL}. DRL provides a much better formulation that allows policy improvement with feedback, while the traditional deep supervised learning-based driving requires labeling and may not be able to deal with the problem of accumulating errors \cite{ross2011reduction}. 
 
 %%% Multi modal end-to-end %%%
-Despite the successful applications of deep neural net as a highly non-linear function approximator, it is often criticized as very data-sensitive and performing more like a purely black box. These characteristics prevent the engineers from semantically investigating the some crucial property such as robustness and generalization in order to extend 
+Despite the successful applications of deep neural net as a highly non-linear function approximator, it is often criticized as very data-sensitive and performing more like a purely black box. These characteristics prevent the engineers from semantically investigating crucial properties such as robustness and generalization in order to extend 
 to the real-world applications.
 
 
@@ -61,6 +63,15 @@ hard to visualize semantic meaning
 black box -> no guarantee on 
 raise safety concern ... 
 no use of sensor fusion
+
+
+
+
+
+
+
+
+
 
 It is clear sensor fusion is indispensable for autonomous driving, in order to improve accuracy and robustness in the vehicle's algorithmic decision making. Indeed, multi-modal perception was an integral part of autonomous navigation solutions and even played a critical role in their success \cite{multimodaltartan} before the advent of end-to-end deep learning based approaches. Sensor fusion offers several advantages namely robustness to individual sensor noise/failure, improved object classification and tracking \cite{elfring2016multisensor, cho2014multi, darms2008classification}, robustness to varying weather and environmental conditions, etc. 
 
