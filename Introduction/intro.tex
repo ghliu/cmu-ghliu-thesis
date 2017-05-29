@@ -3,8 +3,6 @@
 \begin{document}
 
 
-% \section{Motivation}
-
 %%%  Introduce for Autonomous Driving : Motivation %%%
 
 % The rapid urbanization globally in the recent past has led to severe road congestion, rise in pollution levels and an increase in road accidents, therefore presenting a very grim picture of the current state of urban transportation. At the moment, private automobiles are widely recognized as an unsustainable solution for the future of personal urban mobility \cite{reinventing}. Fortunately however, great strides have been made in the development of autonomous driving technologies, energized by the successful demonstrations by some teams at the DARPA Urban Challenge \cite{boss, multimodaltartan}. While offering an opportunity to develop sustainable and safe solutions to personal mobility \cite{usecases_of_AD}, they also hint at a complete overhaul of the urban transportation landscape by ushering in Autonomous Vehicles-on-Demand. 
@@ -27,12 +25,17 @@ such as drifting \cite{}.
 % can be treated as a well-investigated kinodynamic planning problem in control space, several challenges raised when operating in off-road environment. 
 % Secondly, developing a local planner for high speed operation can be categorized as an anytime planning problem. Thus, computational efficiency should be taken into account for the real-time concern.
 
+%% Stochastic Regularization
+
+Stochastic regularization is an active area of research in deep learning made popular by the success of, \textit{Dropout} \cite{dropout}. Following this landmark paper, numerous extensions were proposed  to further generalize this idea such as \textit{Blockout} \cite{blockout}, \textit{DropConnect} \cite{dropconnect}, \textit{Zoneout} \cite{zoneout}, etc. In the similar vein, two interesting techniques have been proposed for specialized regularization in the multi-modal setting namely ModDrop \cite{moddrop} and ModOut \cite{modout}. 
+Given a much wider set of sensors to choose from, ModOut attempts to identify which sensors are actually needed to fully observe the system behavior. This is out of the scope of this work. Here, we assume that all the sensors are critical and we only focus on improving the state information based on inputs from multiple observers. 
+ModDrop is much closer in spirit to the proposed \emph{Sensor Dropout (SD)}. However, unlike ModDrop, pre-training with individual sensor inputs using separate loss functions is not required. A network can be directly constructed in an end-to-end fashion and \emph{Sensor Dropout} can be directly applied at the sensor fusion layer just like Dropout. Its appeal lies in its simplicity during implementation and is designed to be applicable even to the DRL setting. As far as we know, this is the first attempt at applying stochastic regularization in a DRL setting with the spirit of sensor fusion. 
+
 %%%  Introduce for Autonomous Driving : Alternative learning-based approach %%%
 One of the key challenges to building accurate and robust autonomous navigation systems is to develop a strong intelligence pipeline that is able to efficiently gather incoming sensor data and take suitable control actions with good repeatability and fault-tolerance. In the past, this was addressed in a modular fashion, where  specialized algorithms were developed for each sub-system and finally integrated with some fine tuning. 
 
 More recently, there is great interest in end-to-end approaches that can learn complex mappings that go directly from the input to the output by leveraging the availability of a large volume of task specific data. This approach is purported to perform better since we are optimizing the whole system. 
 
-%%% Introduce Deep Learning and Deep Reinforcement Learning : Motivation on true AI for decision making %%%%%%%%
 
 End-to-end approaches have become more appealing with the use of deep learning in robotics and has been successful in developing visuomotor policies for autonomous driving \cite{deepdriving,nvidiacar,endtoendcars}. However, the traditional deep supervised learning-based driving requires a great deal of human annotation and may not be able to deal with the problem of accumulating errors \cite{ross2011reduction}. On the other hand, deep reinforcement learning (DRL) offers a better formulation that allows policy improvement with feedback, and has been shown to achieve human-level performance on several video games \cite{mnih2013playing, mnih2015human,2016-TOG-deepRL}.
 
