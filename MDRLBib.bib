@@ -1,7 +1,10 @@
+@article{lample2016playing,
+  title={Playing FPS games with deep reinforcement learning},
+  author={Lample, Guillaume and Chaplot, Devendra Singh},
+  journal={arXiv preprint arXiv:1609.05521},
+  year={2016}
+}
 
-
-
-%% TODO cite this one
 @inproceedings{dosovitskiy2016learning,
   title={Learning to act by predicting the future},
   author={Dosovitskiy, Alexey and Koltun, Vladlen},
@@ -10,26 +13,68 @@
   booktitle = "International Conference on Learning Representations (ICLR)",
 }
 
-@article{DBLP:journals/corr/LarssonMS16a,
-  author    = {Gustav Larsson and
-               Michael Maire and
-               Gregory Shakhnarovich},
-  title     = {FractalNet: Ultra-Deep Neural Networks without Residuals},
-  journal   = {CoRR},
-  volume    = {abs/1605.07648},
+
+@inproceedings{WangFL15,
+  author    = {Ziyu Wang and
+               Nando de Freitas and
+               Marc Lanctot},
+  title     = {Dueling Network Architectures for Deep Reinforcement Learning},
+  booktitle={international Conference on Machine Learning (ICML)},
   year      = {2016},
-  url       = {http://arxiv.org/abs/1605.07648},
-  timestamp = {Wed, 01 Jun 2016 15:51:08 +0200},
-  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/corr/LarssonMS16a},
+}
+
+@inproceedings{simonyan2013deep,
+  title={Deep inside convolutional networks: Visualising image classification models and saliency maps},
+  author={Simonyan, Karen and Vedaldi, Andrea and Zisserman, Andrew},
+  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
+  year={2014}
+}
+
+@inproceedings{lange2012autonomous,
+  title={Autonomous reinforcement learning on raw visual input data in a real world application},
+  author={Lange, Sascha and Riedmiller, Martin and Voigtlander, Arne},
+  booktitle={Neural Networks (IJCNN), The 2012 International Joint Conference on},
+  pages={1--8},
+  year={2012},
+  organization={IEEE}
+}
+
+@article{DBLP:journals/corr/JaderbergMCSLSK16,
+  author    = {Max Jaderberg and
+               Volodymyr Mnih and
+               Wojciech Marian Czarnecki and
+               Tom Schaul and
+               Joel Z. Leibo and
+               David Silver and
+               Koray Kavukcuoglu},
+  title     = {Reinforcement Learning with Unsupervised Auxiliary Tasks},
+  journal   = {CoRR},
+  volume    = {abs/1611.05397},
+  year      = {2016},
+  url       = {http://arxiv.org/abs/1611.05397},
+  timestamp = {Thu, 01 Dec 2016 19:32:08 +0100},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/corr/JaderbergMCSLSK16},
   bibsource = {dblp computer science bibliography, http://dblp.org}
 }
 
-@article{lample2016playing,
-  title={Playing FPS games with deep reinforcement learning},
-  author={Lample, Guillaume and Chaplot, Devendra Singh},
-  journal={arXiv preprint arXiv:1609.05521},
-  year={2016}
+@inproceedings{finn2016deep,
+  title={Deep spatial autoencoders for visuomotor learning},
+  author={Finn, Chelsea and Tan, Xin Yu and Duan, Yan and Darrell, Trevor and Levine, Sergey and Abbeel, Pieter},
+  booktitle={Robotics and Automation (ICRA), 2016 IEEE International Conference on},
+  pages={512--519},
+  year={2016},
+  organization={IEEE}
 }
+
+@inproceedings{watter2015embed,
+  title={Embed to control: A locally linear latent dynamics model for control from raw images},
+  author={Watter, Manuel and Springenberg, Jost and Boedecker, Joschka and Riedmiller, Martin},
+  booktitle={Advances in Neural Information Processing Systems},
+  pages={2746--2754},
+  year={2015}
+}
+
+
 
 %%%%%%%% Autonomous Driving %%%%%%%%%%%%%%%%%%%
 @incollection{usecases_of_AD,
@@ -206,7 +251,7 @@
 }
 
 @inproceedings{mirowski2017a,
-    author = "Mirowski, Piotr and Pascanu, Razvan and Viola, Fabio and Soyer, Hubert and Ballard, Andy and Banino, Andrea and Denil, Misha and Goroshin, Ross and Sifre, Laurent and Kavukcuoglu, Koray and Kumaran, Dharshan and Hadsell, Raia",
+    author = {Mirowski, Piotr and Pascanu, Razvan and Viola, Fabio and Soyer, Hubert and Ballard, Andy and Banino, Andrea and Denil, Misha and Goroshin, Ross and Sifre, Laurent and Kavukcuoglu, Koray and Kumaran, Dharshan and Hadsell, Raia},
     title = {Learning to Navigate in Complex Environments},
     year = "2017",
     booktitle = "International Conference on Learning Representations (ICLR)",
@@ -228,13 +273,6 @@
 @inproceedings{simonyan2014very,
   title={Very deep convolutional networks for large-scale image recognition},
   author={Simonyan, Karen and Zisserman, Andrew},
-  booktitle={International Conference on Learning Representations (ICLR)},
-  year={2015}
-}
-
-@article{simonyan2015deep,
-  title={Deep inside convolutional networks: Visualising image classification models and saliency maps},
-  author={Simonyan, Karen and Vedaldi, Andrea and Zisserman, Andrew},
   booktitle={International Conference on Learning Representations (ICLR)},
   year={2015}
 }
@@ -444,11 +482,17 @@
   howpublished = {\url{https://yanpanlau.github.io/2016/10/11/Torcs-Keras.html}},
 }
 
+@article{simonyan2014very,
+  title={Very deep convolutional networks for large-scale image recognition},
+  author={Simonyan, Karen and Zisserman, Andrew},
+  journal={arXiv preprint arXiv:1409.1556},
+  year={2014}
+}
 
 %%% done
 @inproceedings{ross2011reduction,
   title = {A Reduction of Imitation Learning and Structured Prediction 
-  		 to No-Regret Online Learning.},
+       to No-Regret Online Learning.},
   author = {Ross, St{\'e}phane and Gordon, Geoffrey J and Bagnell, Drew},
   booktitle = {AISTATS},
   year = {2011},
@@ -565,9 +609,20 @@
   organization={IEEE}
 }
 
-
+@article{bohez2017sensor,
+  title={Sensor Fusion for Robot Control through Deep Reinforcement Learning},
+  author={Bohez, Steven and Verbelen, Tim and De Coninck, Elias and Vankeirsbilck, Bert and Simoens, Pieter and Dhoedt, Bart},
+  journal={arXiv preprint arXiv:1703.04550},
+  year={2017}
+}
 
 %%%% Selective Dropout %%%%%%%%%%%%%%%%%
+@article{fractalnet-droppath,
+  title={Fractalnet: Ultra-deep neural networks without residuals},
+  author={Larsson, Gustav and Maire, Michael and Shakhnarovich, Gregory},
+  journal={arXiv preprint arXiv:1605.07648},
+  year={2016}
+}
 
 @article{moddrop,
   title={Moddrop: adaptive multi-modal gesture recognition},
@@ -615,15 +670,6 @@
   booktitle={Proceedings of the 30th International Conference on Machine Learning (ICML-13)},
   pages={1058--1066},
   year={2013}
-}
-
-
-%% pages={}, TODO
-@inproceedings{wang2015dueling,
-  title={Dueling network architectures for deep reinforcement learning},
-  author={Wang, Ziyu and Schaul, Tom and Hessel, Matteo and van Hasselt, Hado and Lanctot, Marc and de Freitas, Nando},
-  booktitle={Proceedings of the 33th International Conference on Machine Learning (ICML-16)},
-  year={2016}
 }
 
 @article{dropoutbayes,
