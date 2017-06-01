@@ -102,6 +102,10 @@
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
 \def\BState{\State\hskip-\ALG@thistlm}
 
+\algnewcommand\algorithmicforeach{\textbf{for each}}
+\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
+
+
 % Approximately 1" margins, more space on binding side
 %\usepackage[letterpaper,twoside,vscale=.8,hscale=.75,nomarginpar]{geometry}
 %for general printing (not binding)
@@ -153,8 +157,8 @@ Devin Schwab
 \end{abstract}
 
 \begin{acknowledgments}
-    TODO
 
+The author would like to thank ...
   
 \end{acknowledgments}
 
@@ -190,17 +194,17 @@ Devin Schwab
 \chapter{Introduction}
 \subfile{Introduction/intro.tex}
 
-\chapter{Preliminaries (Background)} \label{chap:related_work}
+\chapter{Related Work} \label{chap:related_work}
 \subfile{RelatedWork/relatedWork.tex}
 
 \chapter{Model Predictive Planning} \label{chap:rrtplanner}
 \subfile{RRTPlanner/rrtplanner.tex}
 
-\chapter{Traversibility Analysis using DIRL} \label{chap:dirl}
-\subfile{DIRL/dirl.tex}
-
-\chapter{Multimodal End-to-end Learning} \label{chap:multimodalDRL}
+\chapter{Learning End-to-end Multimodal Sensor Policy} \label{chap:multimodalDRL}
 \subfile{MultimodalDRL/multimodalDRL.tex}
+
+\chapter{Learning from Demonstration using DIRL} \label{chap:dirl}
+\subfile{DIRL/dirl.tex}
 
 \chapter{Conclusion and Future Work} \label{chap:conclusion}
 \subfile{Conclusion/conclusion.tex}
@@ -217,6 +221,7 @@ Devin Schwab
 \renewcommand{\bibsection}{\chapter{\bibname}}
 %\newcommand{\bibpreamble}{This text goes between the ``Bibliography''
 %  header and the actual list of references}
+% \bibliographystyle{srtnat}
 \bibliographystyle{unsrtnat}
 \bibliography{MDRLBib,RRTPlannerBib,DIRLBib} %your bib file
 \nocite{*}

@@ -1,97 +1,143 @@
 \documentclass[../thesis.tex]{subfiles}
 
+% TODO
+% find a place to add DIRL intro
+
 \begin{document}
 
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.32\linewidth}
+        \includegraphics[height=3.5cm]{./Introduction/urban_challenge.jpg}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.32\linewidth}
+        \includegraphics[height=3.5cm]{./Introduction/uber.jpg}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.32\linewidth}
+        \includegraphics[height=3.5cm]{./Introduction/crusher.jpg}
+    \end{subfigure}
+    \caption{Some of the well-known autonomous navigation systems: (a) The Carnegie Mellon Tartan that won the Urban Challenge in 2007 \cite{boss}. (b) Uber's self-driving vehicle. (c) Crusher. \cite{stentz2007crusher}}
+    \label{fig:uber_rock}
+\end{figure}
 
-%%%  Introduce for Autonomous Driving : Motivation %%%
+\section{Motivation}
 
-% The rapid urbanization globally in the recent past has led to severe road congestion, rise in pollution levels and an increase in road accidents, therefore presenting a very grim picture of the current state of urban transportation. At the moment, private automobiles are widely recognized as an unsustainable solution for the future of personal urban mobility \cite{reinventing}. Fortunately however, great strides have been made in the development of autonomous driving technologies, energized by the successful demonstrations by some teams at the DARPA Urban Challenge \cite{boss, multimodaltartan}. While offering an opportunity to develop sustainable and safe solutions to personal mobility \cite{usecases_of_AD}, they also hint at a complete overhaul of the urban transportation landscape by ushering in Autonomous Vehicles-on-Demand. 
+%%%  Introduce for on/off-road Autonomous Driving : Motivation %%%
 
-%%% Off-road navigation and traditional motion planner %%%
+The rapid urbanization globally in the recent past has led to severe road congestion, rise in pollution levels and an increase in road accidents, therefore presenting a very grim picture of the current state of urban transportation. 
+At the moment, private automobiles are widely recognized as an unsustainable solution for the future of personal urban mobility \cite{reinventing}. 
+Fortunately however, great strides have been made in the development of autonomous driving technologies, energized by the successful demonstrations by some teams at the DARPA Urban Challenge \cite{boss, multimodaltartan}. 
+By offering an opportunity to develop sustainable and safe solutions to personal mobility \cite{usecases_of_AD}, they also hint at a complete overhaul of the urban transportation landscape by ushering in Autonomous Vehicles-on-Demand. 
+While there is a foreseeable trend on operating autonomous driving technologies on-road within decade, extreme/aggressive motion planning in the off-road situations or unstructured terrains has gained great interests recently \cite{kolter2010probabilistic,williams2016aggressive,gray2012predictive,cutler2016autonomous,cutler2014reinforcement}. 
 
-Recently, there has been a great stride in the development of autonomous driving technologies, energized by the successful demonstrations by some teams at the DARPA Urban Challenge \cite{boss, multimodaltartan}. In general,
-motion planning in urban environment can be efficiently solved with graph-based planner [cite D*] followed by the trajectory optimization techniques [cite standard practical XX]. 
+\subsection{Traditional Motion Planner}
 
-However, planning for unmanned ground vehicle on rough terrain has been an on-going research topics. 
-One of the main challenges for off-road motion planning come from the fact that the vehicle dynamic in off-road environment is much more unpredictable in contrast to on-road condition. Factor such as wheel-terrain interaction for modeling the sliding effect is still an active research area \todo{cite some papers}. 
-While a simple kinematic model may be enough to tackle motion planning in urban, maneuvering agilely requires a much complex vehicle model. The model naturally comes with a higher dimensional state space representation, and thus breaks down the standard graph-based approach. 
+%%% Intro of Graph base and sample base planner %%%
 
-% cite RRT
-An alternative approach is the sample-based planner, which in general is more efficient in solving higher-dimensional state space. 
-Built upon the successful applications on many robotics problems such as manipulations \cite{}, researchers has tried to extend the approach to an aggressive motion planner for off-road vehicle. 
-Behavior 
-such as drifting \cite{}.
+The two most common approaches for ground vehicles motion planning are graph based planner and sample based planner. 
+Both approaches have shown their robustnesses in the DRAPA Urban Challenge \cite{koenig2002d,kuwata2008motion} and UPI program \cite{kelly2006toward,stentz2007crusher}. The feasible trajectory can be solved efficiently under certain reasonable assumptions, then fine-tuned with optimization techniques to ensure criteria such as smoothness and kinematic constraint \cite{dolgov2008practical}.
 
-% can be treated as a well-investigated kinodynamic planning problem in control space, several challenges raised when operating in off-road environment. 
-% Secondly, developing a local planner for high speed operation can be categorized as an anytime planning problem. Thus, computational efficiency should be taken into account for the real-time concern.
+%%% Pros and cons of two approach applied to off-road (extreme) navigation %%%
 
-%% Stochastic Regularization
+Though graph based planner has shown a great development on off-road navigation system \cite{kelly2006toward,stentz2007crusher}, it is limited to the low dimensional configuration space.
+In fact, one of the main challenges for off-road motion planning comes from the fact that the vehicle dynamics in off-road environment is much more unpredictable in contrast to the on-road conditions. 
+Factors such as wheel-terrain interaction for modeling the sliding effect is still an active research area \cite{shibly2005equivalent,rubinstein2004detailed}. 
+Maneuvering agilely and aggressively on the rough terrain requires a much complex vehicle model, which inevitably leads to a higher dimensional configuration space, and thus slows down the standard graph based approaches. 
 
-Stochastic regularization is an active area of research in deep learning made popular by the success of, \textit{Dropout} \cite{dropout}. Following this landmark paper, numerous extensions were proposed  to further generalize this idea such as \textit{Blockout} \cite{blockout}, \textit{DropConnect} \cite{dropconnect}, \textit{Zoneout} \cite{zoneout}, etc. In the similar vein, two interesting techniques have been proposed for specialized regularization in the multi-modal setting namely ModDrop \cite{moddrop} and ModOut \cite{modout}. 
-Given a much wider set of sensors to choose from, ModOut attempts to identify which sensors are actually needed to fully observe the system behavior. This is out of the scope of this work. Here, we assume that all the sensors are critical and we only focus on improving the state information based on inputs from multiple observers. 
-ModDrop is much closer in spirit to the proposed \emph{Sensor Dropout (SD)}. However, unlike ModDrop, pre-training with individual sensor inputs using separate loss functions is not required. A network can be directly constructed in an end-to-end fashion and \emph{Sensor Dropout} can be directly applied at the sensor fusion layer just like Dropout. Its appeal lies in its simplicity during implementation and is designed to be applicable even to the DRL setting. As far as we know, this is the first attempt at applying stochastic regularization in a DRL setting with the spirit of sensor fusion. 
+Sample based planner on the other hand is more efficient in solving higher-dimensional motion planning. 
+Built upon the successful applications on many robotics problems such as manipulations \cite{kuffner2000rrt}, researchers have tried to extend the approach to an aggressive motion planner such as drifting \cite{hwan2011anytime}. 
+However, unlike graph based planner that guarantees a certain level of optimality, sample based planner in general only permits asymptotic convergence to the optimal solution. Moreover, it is not straight-forward to implement in kinodynamic problems.
 
-%%%  Introduce for Autonomous Driving : Alternative learning-based approach %%%
-One of the key challenges to building accurate and robust autonomous navigation systems is to develop a strong intelligence pipeline that is able to efficiently gather incoming sensor data and take suitable control actions with good repeatability and fault-tolerance. In the past, this was addressed in a modular fashion, where  specialized algorithms were developed for each sub-system and finally integrated with some fine tuning. 
+%%% Summary of the traditional motion planner (Link to end-to-end in the next section) %%%
 
-More recently, there is great interest in end-to-end approaches that can learn complex mappings that go directly from the input to the output by leveraging the availability of a large volume of task specific data. This approach is purported to perform better since we are optimizing the whole system. 
-
-
-End-to-end approaches have become more appealing with the use of deep learning in robotics and has been successful in developing visuomotor policies for autonomous driving \cite{deepdriving,nvidiacar,endtoendcars}. However, the traditional deep supervised learning-based driving requires a great deal of human annotation and may not be able to deal with the problem of accumulating errors \cite{ross2011reduction}. On the other hand, deep reinforcement learning (DRL) offers a better formulation that allows policy improvement with feedback, and has been shown to achieve human-level performance on several video games \cite{mnih2013playing, mnih2015human,2016-TOG-deepRL}.
-
-
-%%% Deep end-to-end learning %%%
-However, both approaches can be suffered from the approximation of the vehicle model. XXX % TODO
-In the past few years, there is a great interest in applying a more end-to-end approach \cite{deepdriving,nvidiacar,endtoendcars} wherein one can learn a complex mapping that goes directly from the input to the output by leveraging the availability to a large volume of task specific data. More recently, the approach has been pushed one step forward thanks to the success of deep reinforcement learning (DRL), which has shown to achieve human-level performance on many gaming environments \cite{mnih2013playing, mnih2015human,2016-TOG-deepRL}. DRL provides a much better formulation that allows policy improvement with feedback, while the traditional deep supervised learning-based driving requires labeling and may not be able to deal with the problem of accumulating errors \cite{ross2011reduction}. 
-
-%%% Multi modal end-to-end %%%
-Despite the successful applications of deep neural net as a highly non-linear function approximator, it is often criticized as very data-sensitive and performing more like a purely black box. These characteristics prevent the engineers from semantically investigating crucial properties such as robustness and generalization in order to extend 
-to the real-world applications.
-
-
-thus not intuitively allow engineers to semantic 
-. For the 
-
-In fact, with a closer look at the recent rise of autonomous driving, 
-
-sensitive to training data and often used as a black box 
-
-one of the key challenges for this approach to extend to the end-to-end controller in robotics applications is the black-box nature of the deep neural net.
-
-the lack of the capability to visualize the semantic meaning. 
-
-Despite the powerful deep neural net as a function approximator introduced by, one of the key challenges for 
-However, one of the key challenges for the end-to-end approach is to 
-hard to visualize semantic meaning 
-black box -> no guarantee on 
-raise safety concern ... 
-no use of sensor fusion
+Despite the pros and cons of each approach, they both share a common frameworks where a intelligent pipeline is built to efficiently gather incoming sensor data and take suitable control actions with good repeatability and fault-tolerance. 
+The resulting autonomous navigation system is addressed in a modular fashion, where specialized algorithms were developed for each sub-system and finally integrated with some fine tuning.
 
 
+\subsection{Learning End-to-end Controller}
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}[b]{0.45\linewidth}
+        \includegraphics[height=4cm]{./Introduction/gta.jpg}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\linewidth}
+        \includegraphics[height=4cm]{./Introduction/nvidia.png}
+    \end{subfigure}
+    \caption{Demonstrations of the end-to-end approach on autonomous navigation applied to (a) the realistic simulator (GTA V), and (b) the full-size vehicle by NVIDIA\cite{nvidiacar}.}
+    \label{fig:end-to-end}
+\end{figure}
+
+%%% Intro of end-to-end learning  %%%
+
+More recently, however, there is a great interest in applying an end-to-end approach wherein one can learn a complex mapping that goes directly from the input to the output by leveraging the availability to a large volume of task specific data. 
+This approach is purported to perform better since we are optimizing the whole system. 
+The end-to-end approaches have become more appealing with the use of deep learning in robotics and has shown successes in developing visuomotor policies for autonomous driving \cite{deepdriving,nvidiacar,endtoendcars}. 
+However, the traditional deep supervised learning-based driving requires a great deal of human annotation and may not be able to deal with the problem of accumulating errors \cite{ross2011reduction}. 
+
+%%%  Our choice of using DRL instead of RL  %%%
+
+On the other hand, deep reinforcement learning (DRL) offers a better formulation that allows policy improvement with feedback, and has been shown to achieve human-level performance on several video games \cite{mnih2013playing, mnih2015human,2016-TOG-deepRL}.
+The choice of DRL over the more tried and tested waters of Supervised Learning comes from the interest of better generalization and allowing for a more exploration-friendly setting. 
+Recently, there have been a great demands and improvements on realistic simulator \cite{deepdrive,udacity} with the hope that the acquired learning in such a simulator can be transferable to the real world with minimal tuning \cite{you2017virtual}. 
+% We are inspired by this new development that provides the potential to work around the large sampling requirements of DRL algorithms, and we wish to extend its use to autonomous driving.
+
+%%% Multimodal DRL %%%
+
+Previous work in DRL predominantly learned policies based on a single input modality, i.e., either low-dimensional physical states, or high-dimensional pixels. 
+For autonomous driving where enhancing safety and accuracy to the maximum possible extent is top priority, developing policies that operate with multiple inputs is the need of the hour. 
+In this light, several resent works in DRL have tried to solve the complex robotics tasks such as human-robot-interaction \cite{qureshi2016robot}, manipulation \cite{levine2016end} and maze navigation \cite{mirowski2017a} with multimodal inputs. 
+However, none of the works have explicitly formulated the multimodal sensor policy in term of sensor fusion, a indispensable technique that improve accuracy and robustness in an autonomous navigation setting. 
+This problem is critical as a further step toward the real-world robotics application given the current state-of-the-art DRL agents on many realistic simulators.
+
+In fact, multimodal perception was an integral part of autonomous navigation solutions and even played a critical role in their success \cite{multimodaltartan} before the advent of end-to-end deep learning based approaches. 
+It offers several advantages, namely robustness to individual sensor noise/failure, improved object classification and tracking \cite{elfring2016multisensor, cho2014multi, darms2008classification}, robustness to varying weather and environmental conditions, etc. 
+It is worth mentioning that though \citet{mirowski2017a} uses multimodal sensors to navigate through a maze, information such as depth is only used as an auxiliary loss, i.e. it is not an input to the trained policy but is only used to improve the learning outcomes. 
+In fact, \citet{mirowski2017a} pointed out that the naive RGBD policy performs worse than predicting depth as a regression task,
 
 
+\begin{figure}[b]
+	\vskip -0.1in
+    \centering
+    \begin{subfigure}[b]{0.45\linewidth}
+        \includegraphics[height=3.5cm]{./Introduction/drl_manipulation.jpg}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\linewidth}
+        \includegraphics[height=3.5cm]{./Introduction/drl_perfer_network.png}
+    \end{subfigure}
+    \caption{Recent successes on applying deep reinforcement learning (DRL) algorithms to real-world robotics problems: (a) manipulation \cite{gu2016deep}. (b) autonomous navigation. \cite{prefernetwork}}
+    \label{fig:end-to-end}
+\end{figure}
 
 
+\section{Approaches}
 
+In this work, we first proposed a model-based local planner solve the optimal kinodynamic motion planning problem. 
+The local planner is built upon a vehicle model that effectively captures important state for off-road navigation such as lateral velocity. 
+Practical problems such as re-planning and optimization are addressed under the standard sample based approach, but modified appropriately to encourage a more aggressive maneuvering. 
+The resulting model-predictive planner was tested on the full-size All-Terrain Vehicle (ATV) in the off-road conditions.
 
+In addition, we also present an alternative end-to-end controller that uses multi-sensor input to learn an autonomous navigation policy in a physics-based gaming environment called TORCS \cite{wymann2000torcs}. 
+To show the effectiveness of multi-modal perception, we picked two popular continuous action DRL algorithms namely Normalized Advantage Function (NAF) \cite{CDQN} and Deep Deterministic Policy Gradient (DDPG) \cite{DBLP:journals/corr/LillicrapHPHETS15}, and augmented them to accept multimodal inputs. 
+Though a multimodal sensor policy may greatly improve the reward, it might rely heavily on all the inputs to the extent that it may fail completely even if a single sensor broke down fully or partially. This undesirable consequence renders sensor redundancy useless. 
+To ensure that the learned policy does not succumb to such over-fitting, we apply a novel stochastic regularization method called \emph{Sensor Dropout} during training. 
+Our approach reduces the policy sensitivity to a particular sensor subset, and make it capable of functioning even in the face of partial sensor failure. 
+Based on the Sensor Dropout, we further embedded the standard DRL loss with an auxiliary loss that help reduce the action variations of the multi-modal policy. 
+As far as we know, we are the first to address the multi-modal policy learning in terms of sensor fusion.
 
+Through empirical testing we demonstrate that our proposed multimodal sensor policy can 1) operate with minimal performance drop in noisy environments, and 2) remain functional even in the face of a sensor subset failure. 
+Finally, through the visualization of gradients, we show that the learned policies are conditioned on the same latent input distribution despite having multiple sensory observations spaces - a hallmark of true sensor-fusion.
+Suitable metrics have been devised to study this behavior and highlight its applicability to other domains.
 
-It is clear sensor fusion is indispensable for autonomous driving, in order to improve accuracy and robustness in the vehicle's algorithmic decision making. Indeed, multi-modal perception was an integral part of autonomous navigation solutions and even played a critical role in their success \cite{multimodaltartan} before the advent of end-to-end deep learning based approaches. Sensor fusion offers several advantages namely robustness to individual sensor noise/failure, improved object classification and tracking \cite{elfring2016multisensor, cho2014multi, darms2008classification}, robustness to varying weather and environmental conditions, etc. 
+Note that either the traditional or the end-to-end planner require the cost/reward heuristic function to guild the policy and formally define the optimization problem. 
+However, unlike in the urban environment where cost function can be well defined in a rule-based structure, finding a cost function for off-road navigation can be nontrivial and often requires lot of handy tuning. \cite{silver2010learning}
+Here, motivated by the recent successes \cite{wulfmeier2015maximum,wulfmeier2016watch}, we also investigate into the using deep neural network as the function approximator, and infer the cost/reward function under inverse reinforcement learning platform.
 
-Multi-modal deep learning, in general, is an active area of research in other domains like audiovisual systems \cite{ngmultimodal}, gesture recognition \cite{moddrop}, text/speech and language models \cite{languagemultimodal,srivastava2012multimodal}, etc. However, in the space of end-to-end sensorimotor control for autonomous navigation, this multi-modal outlook has not received much attention and is need of the hour.
-
-% Multi modal DL related works
-Currently, the most promising demonstration of an effective end-to-end framework for autonomous driving is from NVIDIA \cite{nvidiacar}. While this work has some form of sensor fusion, it should be noted that they fuse information from the \textit{same} type of sensor (cameras in this case) but placed in different, but strategic, locations on the car. We argue that a more robust strategy for sensor-fusion is to obtain information from different type of sensors. 
-
-% Multi modal DRL related works
-Recently, there is also a great interest on extending DRL approaches to multi-input fashion in order to tackle complex robotics tasks such as human-robot-interaction \cite{qureshi2016robot} and manipulation \cite{levine2016end}. Recently, \citet{mirowski2017a} proposed an novel approach namely \textit{NAV A3C} and uses information such as vision, depth, and agent velocity for maze navigation. However, information such as depth is only used during training as an auxiliary loss, and it is absent during testing. Moreover, the system dynamic in maze is relatively simple compared with autonomous driving. Here, we are more interested 
-in the aspect of sensor fusion
-No partial sensor failure is addressed.
-
-
-We argue that this problem is critical as a further step toward the real-world robotics application given the current state-of-the-art DRL agents on many realistic simulators. 
-
-%%%%%%%%%%%%%%%%%%%
-
+The thesis is organized as follow:
+In Chapter \ref{chap:related_work} we briefly go through the preliminary background, including the basic sample based planner, the formal definition of deep (inverse) reinforcement learning, and the two continuous action agents used in this work.
+In Chapter \ref{chap:rrtplanner} we formulate our model predictive planner, followed with the derivation of vehicle model, detailed planner design for optimal planning, and finally the experimental results on field.
+In Chapter \ref{chap:multimodalDRL} we propose a new technique at the aspect of sensor fusion in order to improve the performance of the end-to-end controller with multi-sensor inputs. 
+In Chapter \ref{chap:dirl} we investigate the traversibility analysis with the recently popular studies on deep inverse reinforcement learning.
+Finally, we conclude the work in \ref{chap:conclusion} and address some of the interesting direction for future works.
 
 \end{document}

@@ -2,16 +2,14 @@
 
 \begin{document}
 
-In this chapter, we present an alternative end-to-end controller that maps the multi-sensor input directly to the action space based on deep reinforcement learning (DRL), a recently very popular research field. The autonomous navigation policy is trained and tested exhaustively to verify its performance in a physics-based gaming environment called TORCS \cite{wymann2000torcs}. 
-
-While previous work in DRL predominantly learned policies based on a single input modality, i.e., either low-dimensional physical states, or high-dimensional pixels. For autonomous driving task where enhancing safety and accuracy to the maximum extent possible is emphasized, developing policies that operate with multiple inputs is crucial. To show the effectiveness of multi-modal perception, we pick two popular continuous action DRL algorithms namely Normalized Advantage Function (NAF) \cite{CDQN} and Deep Deterministic Policy Gradient (DDPG) \cite{DBLP:journals/corr/LillicrapHPHETS15}, and augment them to accept multi-modal input.
-
-Moreover, we also observe that while a multi-modal policy greatly improves the reward, it might rely heavily on all the inputs to the extent that it may fail completely even if a single sensor broke down fully or partially. This undesirable consequence renders sensor redundancy useless. To ensure that the learned policy does not succumb to such over-fitting, we apply a novel stochastic regularization method called \emph{Sensor Dropout} during training. 
+In this chapter, we present an alternative end-to-end controller that maps the multi-sensor input directly to the action space based on deep reinforcement learning (DRL), a recently very popular research field. 
+We propose two novel methods that effectively train the multimodal sensor policy without over-fitting to partial sensor subset, namely \textit{Sensor Dropout} and \textit{Auxiliary Loss}. 
+Two popular continuous action DRL algorithms namely Normalized Advantage Function (NAF) \cite{CDQN} and Deep Deterministic Policy Gradient (DDPG) \cite{DBLP:journals/corr/LillicrapHPHETS15}, are picked and augmented to accept multi-modal input. The resulting autonomous navigation policy is tested exhaustively to verify its performance in a physics-based gaming environment called TORCS \cite{wymann2000torcs}. 
 
 Through extensive empirical testing we show the following exciting results,
 \begin{enumerate}
 
-	\item Multimodal-DRL with Sensor Dropout(SD) reduces performance drop in a noisy environment from $\approx 30\%$ to just $5\%$, when compared to a baseline single sensor system.
+	\item Multimodal-DRL with Sensor Dropout(SD) reduces performance drop in a noisy environment from $\approx 40\%$ to just $10\%$, when compared to a baseline single sensor system.
 	
 	\item Policies learned using SD best leverage the multi-modal setting by greatly reducing over-dependence on any one sensing modality. Additionally, for each sensor it was observed that SD enforces sparsity and promotes each sensor to base the policy primarily on intuitive and salient features.
 	
@@ -101,47 +99,6 @@ Here, $\lambda$ is an additional hyperparameter that indicates the importance ra
 % it is possible that actions suggested by each policy varies a lot. 
 
 
-% TODO may need to remove this part %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% \begin{algorithm}[t]
-%     \caption{M-DRL with Sensor Dropout}
-%     \label{alg:mdrl-algo}
-% \begin{algorithmic}
-%     \State {\bfseries Input:} Initialize DRL Algorithm \textsc{Agent},\\
-%     \qquad \quad State pre-processed network $f(\cdot|\theta)$, \\
-%     \qquad \quad $N$ network configurations $\mathbb{C}= \left\{c_j\right\}_{j=1~..~N}$,\\
-%     \qquad \quad $N$-state categorical distribution $\mathbb{P}(X=c_j) = p_j$,
-%     \State Initialize experience replay buffers $\mathcal{B} = \left\{\mathcal{B}_j\right\}_{j=1~..~N}$
-%     \For{$episode=1$ {\bfseries to} $Eps$ }
-%      \State Receive initial state $s_1$
-%      \For{$t=1$ {\bfseries to} $T$}
-%         \State $\tilde{s}_t \leftarrow f(s_t|\theta)$
-%         \State $\hat{s}_t \leftarrow$ \textsc{SensorDropout}$(\tilde{s}_t , c_j)$, where $c_j \sim \mathbb{P}$
-%         \State $a_t \leftarrow $\textsc{Agent.Act}$(\hat{s}_t)$ 
-%         \State $r_t,s_{t+1},terminate \leftarrow$ \textsc{Env.Observe}$(s_t, a_t)$ 
-%         \State $\mathcal{B}_j \leftarrow$ \textsc{Query}$(\mathcal{B},c_j)$
-%         \State $\mathcal{B}_j.$\textsc{Append}$(s_t, a_t, r_t, s_{t+1})$
-%         \State \textsc{Agent.Update}$(\mathcal{B}_j)$
-% %        \STATE $t \leftarrow t + 1$
-% % 	 \UNTIL{$terminate$ is $true$}
-%      \EndFor
-%     \EndFor
-% %    \UNTIL{$t > T_{max}$}
-% \end{algorithmic}
-% \end{algorithm}
-
-% \subsection{Augmenting Sensor Dropout with Experience Replay}
-% Experience Replay is a commonly used technique in many off-policy DRL algorithms to break the time-based correlation in the agent's experience and thereby stabilize the training process. It differs from the standard deep supervised learning setting, in that batches are sampled from a memory buffer containing all the experience history. However, extending a dropout-like regularization technique to DRL setting to operate on the experience replay is non-trivial and can cause instability because the target values during training are usually non-stationary. In the following paragraph we investigate the instability issue of dropout-like regularization and argue that it is only combinatorially tractable if blocks are dropped out instead of individual nodes. The Sensor Dropout is not only principled but also well-motivated.
-
-% First, let us denote an instance of the experience as $[s_{t}, a_{t} , r_{t}, s_{t+1}]$, where $a_{t} = \mu(s_t, \mathcal{\tilde{M}}_{t}) $ is generated from the policy network, with a random mask $\mathcal{\tilde{M}}_{t}$ sampled from an arbitrary distribution at the time step $t$. Note that under the dropout setting, the experience is now \textit{mask configuration dependent}. During Bellman's updates, we calculate the one-step look-ahead target value with $Q^{'}(s_{t+1}, \mu^{'}(s_{t+1},\mathcal{\tilde{M}}_{t+1}))$. 
-% If two masks, i.e. $\mathcal{\tilde{M}}_{t}$ and $\mathcal{\tilde{M}}_{t+1}$ are not the same, the behavior of $\mu$ and $\mu^{'}$ can be dramatircally different at least in the \textit{beginning of training} as they use different sensor modalities as input and thus causing instability during training.
-
-% However, under the implementation of Sensor Dropout, this issue can be mitigated by simply maintaining multiple replay buffers for each of the sensor drop configuration $\mathbf{c_j}$. This is not possible with original Dropout as the number of replay buffers will grow exponentially with layer size. Sensor Dropout, on the other hand, makes this tractable as it only grows in the number of sensors. During batch updates, a specific replay buffer is queried given the current layer configuration $\mathbf{c_j}$, followed by the standard batch sampling and update network. This computational advantage makes the principle of sensor-based dropout more attractive and ideally suited in the DRL setting. 
-
-% The overall Multimodal framework with Sensor Dropout regularization is summarized in Algorithm \ref{alg:mdrl-algo}. It can be seen from the above discussion that Sensor Dropout approach is general enough to work with any existing off-policy DRL algorithm in a multi-modal setting. For on-policy algorithms however, Sensor Dropout can be implemented by fixing layer configuration $\mathbf{c_j}$ for every episode. In the next section, we validate the above-mentioned techniques in an open-source racing game called TORCS \cite{wymann2000torcs} and analyze their efficacy.
-
-
-% TODO may need to remove this part %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Evaluation and Analysis} \label{sec:mdrl-results}
 In this section, we outline our experimental setup using TORCS simulator and then exhaustively compare the performance of the trained policies on both DDPG and NAF algorithms with and without Sensor Dropout. The exhaustive analysis includes policy robustness, sensitivity, and dependency on each sensor modality. Finally, we use a perturbation-based technique to visualize the learned policies and finally discuss some of the interesting findings of this exercise.
@@ -161,12 +118,12 @@ The proposed approach was verified on TORCS \cite{wymann2000torcs}, a popular op
 
 As shown in Fig. \ref{fig:TORCS}, the physical state is a $10$ DOF hybrid state, including $3$D velocity ($3$ DOF), position and orientation with respect to track center-line ($2$ DOF), and finally rotational speed of $4$ wheels ($4$ DOF) and engine ($1$ DOF). Each laser scan is composed of $19$ readings spanning a $180\degree$ field-of-view in the the front of car. Finally, camera provides RGB channels with resolution $64 \times 64$. We use the following sensing modalities for our state description: (1) We define \emph{Sensor 1} as a hybrid state containing physical-based information such as odometry and simulated GPS signal. (2) \emph{Sensor 2} consists of $4$ consecutive laser scans (i.e., at time $t$, we input scans from times $t,~ t-1,~t-2~\&~t-3$). Finally, as \emph{Sensor 3}, we supply $4$ consecutive color images capturing the car's front-view. These three representations are used separately to develop our baseline uni-modal sensor policies. The multi-modal state on the other hand has access to all sensors at any given point. When Sensor Dropout (SD) is applied, agent will randomly lose access to a strict subset of sensors. The categorical distribution is initialized with a uniform distribution among total $7$ possible combinations of sensor subset, and the best learned policy is reported here. 
 
-An exploration strategy is injected adding an Ornstein-Uhlenbeck process noise \cite{uhlenbeck1930theory} to the output of the policy network. The choice of reward function is slightly different from  \citep{DBLP:journals/corr/LillicrapHPHETS15} and \citep{A3C} as an additional penalty term to penalize side-ways drifting along the track was added. In practice, this modification leads to more stable policies during training \cite{BenLau16}. 
+An exploration strategy is injected adding an Ornstein-Uhlenbeck process noise \cite{uhlenbeck1930theory} to the output of the policy network. The choice of reward function is slightly different from  \citet{DBLP:journals/corr/LillicrapHPHETS15} and \citet{A3C} as an additional penalty term to penalize side-ways drifting along the track was added. In practice, this modification leads to more stable policies during training \cite{BenLau16}. 
 
 \textbf{Network Architecture}
 For laser feature extraction module, we use two $1D$ convolution layers with $4$ filters of size $4 \times 1$, while image feature extraction is composed of three $2D$ convolution layers: one layer of $16$ filters of size $4 \times 4$ and striding length $4$, followed by two layers each with $32$ filters of size $2 \times 2 $ and striding length $2$. Batch normalization is followed after every convolution layer. All these extraction modules are fused and are later followed up with two fully-connected layers of $200$ hidden units each. All hidden layers have \emph{relu} activations. The final layer of the critic network use \emph{leaner} activation, while the output of the actor network are bounded using \emph{tanh} activation. We use sigmoid activation for the output of $L$ network in NAF. In practice, it leads to a more stable training for high dimensional state space. We trained with minibatch size of $16$. 
 
-We used Adam \todo{cite} for learning the network parameters. For DDPG, the learning rates for actor and critic are $10^{-4}$ and $10^{-3}$, respectively. We allow the actor and critic to maintain its own feature extraction module. In practice, sharing the same extraction module can lead to unstable training. Note that the NAF algorithm maintains three separate networks, which represent the value function ($V(s|\theta^V)$), policy network ($\mu(s|\theta^\mu)$), and the state-dependent covariance matrix in the action space ($P(s|\theta^L)$), respectively. In order to maintain a similar experiment setting and avoid unstable training, we maintain two independent feature extraction modules for $\theta^\mu$, and both $\theta^V$ and $\theta^L$. In a similar vein, we apply a learning rate of $10^{-4}$ for $\theta^\mu$, and $10^{-3}$ for both  $\theta^\mu$ and $\theta^V$. 
+We used Adam \cite{adam} for learning the network parameters. For DDPG, the learning rates for actor and critic are $10^{-4}$ and $10^{-3}$, respectively. We allow the actor and critic to maintain its own feature extraction module. In practice, sharing the same extraction module can lead to unstable training. Note that the NAF algorithm maintains three separate networks, which represent the value function ($V(s|\theta^V)$), policy network ($\mu(s|\theta^\mu)$), and the state-dependent covariance matrix in the action space ($P(s|\theta^L)$), respectively. In order to maintain a similar experiment setting and avoid unstable training, we maintain two independent feature extraction modules for $\theta^\mu$, and both $\theta^V$ and $\theta^L$. In a similar vein, we apply a learning rate of $10^{-4}$ for $\theta^\mu$, and $10^{-3}$ for both  $\theta^\mu$ and $\theta^V$. 
 
 \begin{table}[t]
     \vskip 0.1in
@@ -278,7 +235,7 @@ The performance of the NAF agent drops dramatically when the noise is introduced
 
 \textbf{Multiple Uni-modal Policy:}
 Another intuitive baseline for the multi-sensor problem is to train each uni-modal sensor policy separately. Once individual policies are learned, we can train an additional meta controller that select which policy to follow given the current state.
-For this, we take the best trained policies of each sensor, and train a meta controller that takes the concatenated feature state from each sensor and output a $3 DOF$ softmax layer as the probability of choosing each uni-modal sensor policy. The meta controller is trained under the standard policy gradient method, which can be found in \cite{} \todo{cite} for more details.
+For this, we take the best trained policies of each sensor, and train a meta controller that takes the concatenated feature state from each sensor and output a $3 DOF$ softmax layer as the probability of choosing each uni-modal sensor policy. The meta controller is trained under the standard policy gradient method, which can be found in \cite{meta_policy} for more details.
 
 Policy performance with and without noise for two approaches are summarized in Table \ref{table:multiple-uni-baseline}. 
 The performance of the baseline policy drops dramatically once noise is introduced, which implies that without any regularization the uni-modal policy is prone to overfit. In fact, with the addition of noise the performance drop is sometimes severe in physical-based or laser-based policy. 
@@ -343,7 +300,6 @@ To further examine the impact of SD on effective sensor fusion, we monitor the e
 % In a multi-input-to-output mapping, this denotes the relative weights/importance of each input. 
 To better analyze the effects of SD, we report on a the smaller subset by implementing SD layer to drop either (1) $(physical,~ laser)$ or (2) $vision$. Consequently, the \emph{sensitivity} metric is formulated as the relative sensitivity of the policy on two sensor subsets. If the ratio increases, the agent's dependence shifts toward the sensor block in the numerator and vice versa. Assuming the fusion-of-interest is between the above-mentioned two subsets, we show in Table \ref{table:policy-ratio} that, using SD, the metric get closer to $1.0$, indicating nearly equal importance to both the sensing modalities. The \textit{sensitivity metric} is calculated as 
 % $\mathcal{T}_2^1 = \frac{1}{M}\sum_{i} \left( {\left| \nabla_{\tilde{S}^{(1)}_i} \mu (\tilde{S} | \theta^\mu )\Big|_{S_i} \right|} \right) \left( {\left| \nabla_{\tilde{S}^{(2)}_i} \mu (\tilde{S} | \theta^\mu )\Big|_{S_i} \right|} \right)^{-1} $.
-% NAF policies become dramatically more dependent on all sensors. \todo{add more comments}
 
 \begin{equation}
 \mathcal{T}_2^1 = \frac{1}{M}\sum_{i=1}^M \frac{\left| \nabla_{\tilde{S}^{(1)}_i} \mu (\tilde{S} | \theta^\mu )\Big|_{S_i} \right|}{\left| \nabla_{\tilde{S}^{(2)}_i} \mu (\tilde{S} | \theta^\mu )\Big|_{S_i} \right|} 

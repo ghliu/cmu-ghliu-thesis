@@ -3,10 +3,71 @@
 \begin{document}
 
 
-% \section{Traditional Motion Planning (not sure)}
+\section{Sample Based Planning}
+\label{sec:sample_based_planning}
+
+Sample based planners search for the feasible paths through the configuration space in a probabilistic fashion. 
+Similar to graph-based approaches, the validity of configuration space need not to be explicitly formulated, instead only a function that determines whether a specific configuration is valid. 
+The probabilistic property makes sample based planners suitable to tackle high dimensional configuration space planning problems, yet with the trade-off on the sub-optimality of the solution. 
+The Rapidly-exploring Random Tree (RRT) is a sampling based planner which build trees of valid trajectories (edges) between points in configuration space (nodes).
+As shown in Algorithm \ref{alg:RRT} \cite{lavalle1998rapidly}, to grow these graphs a new point in configuration space is sampled, and the closest point on the existing tree is extended towards this sampled point.
+
+\begin{algorithm}
+  \caption{RRT} \label{alg:RRT}
+  \begin{algorithmic}[1]
+    \State $T \leftarrow$ InitTree( $x_{start}$ )
+    \While {GoalNotReached($T, X_{goal}$)}
+	    \State $x_{sample} \in X \leftarrow$ Sample()
+	    \State $x_{nearest} \leftarrow $ Nearest($T, x_{sample}$)
+	    \State $x_{new} \leftarrow $ Extend($x_{nearest}, x_{sample}$)
+	    \State T $\leftarrow $UpdateTree($(x_{nearest},x_{new}), T)$)
+    \EndWhile
+  \end{algorithmic}
+\end{algorithm}
+
+The Extend function constructs a linearly trajectory in the configuration space from $x_{nearest}$ towards $x_{sample}$. 
+The extension terminates at $x_{new}$ either when $x_{sample}$ is reached or the trajectory enters an invalid region, which can be specified by the validity function mentioned in the previous paragraph, or a hyperparameter specified as the \textit{step size}. 
+However, The standard RRT planner does not guarantee optimality of the solution. 
+
+\citet{karaman2011sampling} proposed an extension version of RRT that follow a asymptotic convergence to the optimal solution. 
+As shown in Algorithm \ref{alg:RRT_star}, the new algorithm, named RRT*, preserves the original structure yet embeds the the following two additional procedures.
+
+\begin{enumerate}
+
+	\item Instead of extending the tree from $x_{nearest}$ towards $x_{new}$, a local search on the subset $X_{near}$ that centered at $x_{nearest}$  is performed in order to find an alternative candidate. The new node $x_{min}$ should be collision free and follows the constraint: $cost(x_{start},x_{min}) + cost(x_{min}, x_{new}) < cost(x_{start},x_{nearest}) + cost(x_{nearest}, x_{new})$. 
+	
+	\item Replace the original edges from $x_{min}$ to $x_{nearest}$ with $E(x_{min}, x{new})$ and $E(x_{new}, x_{nearest})$ if the resulting trajectory has lesser cost from $x_{start}$ to $x_{nearest}$. 
+
+\end{enumerate}
+
+\begin{algorithm}
+  \caption{New Extend and Update Function in RRT*} \label{alg:RRT_star}
+  \begin{algorithmic}[1]
+    \State $x_{new} \leftarrow $ Extend($x_{nearest}, x_{sample}$)
+    \State $X_{min} \leftarrow $ LocalSearch($T, x_{nearest}$)
+    \State $x_{min} \leftarrow x_{nearest}$
+    \ForEach {$x \in X_{min} $}
+    	\State $oldCost \leftarrow cost(x_{start},x_{nearest}) + cost(x_{nearest}, x_{new})$
+    	\State $newCost \leftarrow cost(x_{start},x) + cost(x, x_{new})$
+    	\If {$ newCost < oldCost $}
+    	\State $x_{min} \leftarrow x$
+    	\EndIf
+    \EndFor
+    \State T $\leftarrow $ UpdateTree($(x_{min},x_{new}), T)$)
+    \ForEach {$x \in X_{min} $}
+    	\State $oldCost \leftarrow cost(x, x_{nearest})$
+    	\State $newCost \leftarrow cost(x_{new}, x_{nearest})$
+    	\If {$ newCost < oldCost $}
+    		\State $E \leftarrow E \setminus (x, x_{nearest})$
+    		\State $E \leftarrow E \cup (x_{new}, x_{nearest})$
+    	\EndIf
+    \EndFor
+  \end{algorithmic}
+\end{algorithm}
 
 
-%% Meta controller in DRL, H-DRL
+% Sampling based planners will never sample directly on the measure-zero contact manifold, and linearly extending a contact configuration to a new sampled point will immediately leave the contact manifold, immediately entering an invalid region in configuration space, producing no progress.
+
 
 \section{Deep Reinforcement Learning (DRL)} 
 % \label{sec:mdrl-background}
@@ -38,7 +99,9 @@ In high dimensional state/action space, these functions are usually approximated
 To exhaustively analyze the effect of multi-sensor input and the new stochastic regularization technique, we picked two algorithms, namely DDPG and NAF. It is worth noting that the two algorithms are very different, with DDPG being an off-policy actor-critic method and NAF an off-policy value-based one. By augmenting these two algorithms, we highlight that any DRL algorithm, modified appropriately, can benefit from using multiple inputs. Before introducing the multi-modal architecture, we briefly summarize the two algorithms below.
 
 
-\subsection{Normalized Advantage Function (NAF)} 
+\subsection{Continuous Action Space Algorithms}
+
+\subsubsection{Normalized Advantage Function (NAF)} 
 \label{sec:CDQN}
 
 %%% Q-learning %%%
@@ -71,7 +134,7 @@ During run-time, the greedy policy can be performed by simply taking the output 
 	\end{center}
 \end{figure} 
 
-\subsection{Deep Deterministic Policy Gradient (DDPG)}
+\subsubsection{Deep Deterministic Policy Gradient (DDPG)}
 %%% Actor-Critic and DPG %%%
 An alternative approach to continuous RL tasks was the use of an actor-critic framework, which maintains an explicit policy function, called \textit{actor}, and an action-value function called as \textit{critic}. In \citet{dpg}, a novel \emph{deterministic} policy gradient (DPG) approach was proposed and it was shown that deterministic policy gradients have a model-free form and follow the gradient of the action-value function. 
 
@@ -85,10 +148,17 @@ An alternative approach to continuous RL tasks was the use of an actor-critic fr
 Building on this result, \citet{DBLP:journals/corr/LillicrapHPHETS15} proposed an extension of DPG with deep architecture to generalize their prior success with discrete action spaces \cite{mnih2015human} onto continuous spaces. Using the DPG, an off-policy algorithm was developed to estimate the $Q$ function using a differentiable function approximator. Similar techniques as in \cite{mnih2015human} were utilized for stable learning. In order to explore the full state and action space, an exploration policy was constructed by adding Ornstein-Uhlenbeck noise process \cite{uhlenbeck1930theory}. In short, actions are chosen stochastically but a deterministic policy gradient is learned. The data flow for prediction and back-propagation steps are shown in Fig. \ref{fig:CDQN-DDPG} (c) and (d), respectively.
 
 
+\section{Stochastic regularization}
+
+Stochastic regularization is an active area of research in deep learning made popular by the success of, \textit{Dropout} \cite{dropout}. Following this landmark paper, numerous extensions were proposed  to further generalize this idea such as \textit{Blockout} \cite{blockout}, \textit{DropConnect} \cite{dropconnect}, \textit{Zoneout} \cite{zoneout}, etc. In the similar vein, two interesting techniques have been proposed for specialized regularization in the multi-modal setting namely ModDrop \cite{moddrop} and ModOut \cite{modout}. 
+Given a much wider set of sensors to choose from, ModOut attempts to identify which sensors are actually needed to fully observe the system behavior. This is out of the scope of this work. Here, we assume that all the sensors are critical and we only focus on improving the state information based on inputs from multiple observers. 
+ModDrop is much closer in spirit to the proposed \emph{Sensor Dropout (SD)}. However, unlike ModDrop, pre-training with individual sensor inputs using separate loss functions is not required. A network can be directly constructed in an end-to-end fashion and \emph{Sensor Dropout} can be directly applied at the sensor fusion layer just like Dropout. Its appeal lies in its simplicity during implementation and is designed to be applicable even to the DRL setting. As far as we know, this is the first attempt at applying stochastic regularization in a DRL setting with the spirit of sensor fusion. 
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Deep Inverse Reinforcement Learning (DIRL)} 
-\label{sec:dirl}
+\label{sec:dirl_intro}
 
 %%% Formulation of IRL %%%
 
@@ -100,22 +170,37 @@ Building on this result, \citet{DBLP:journals/corr/LillicrapHPHETS15} proposed a
 	\end{center}
 \end{figure} 
 
-As shown in Fig. \ref{fig:irl_rl},
-in the standard reinforcement learning, we are interested in learning the optimal policy that maximizes the total expected reward collected from the environment. However, for the situation where the consequence of the policy is relatively easy to observe, yet designing a cost function can be nontrivial and often requires lots of handy tuning, we can formulate the problem by solving the standard reinforcement learning \textit{inversely}. (See Fig. X) The problem is thereby called \textit{inverse} reinforcement learning (IRL) or Learning from demonstration (LfD) \todo{check this}. Given a set of expert demonstration $D=\left\{ \xi_i \right\}_{i=1}^{N}$, where each trajectory $\xi_i$ consists of a sequence of state-action pair $\xi_i = \left\{ (s_j, a_j) \right\}_{j=1}^{K}$, the goal is to infer the underlying reward function that lead to the optimal policy $\pi$. The reward function $r$ is parametrized by $\theta$.
+As shown in Fig. \ref{fig:irl_rl}, in the standard reinforcement learning, we are interested in learning the optimal policy that maximizes the total expected rewards collected from the environment. 
+However, for some of the interesting problems in robotics field, designing a reward function can be nontrivial and often requires lots of handy tuning. 
+On the other hand, the consequences of the policy are usually relatively easy to observe. 
+These problems fall in the category of \textit{inverse} reinforcement learning (IRL) \cite{ng2000algorithms} ( also imitation learning, learning from demonstration).
 
-%%% IRL as a MAP Formulation %%%
+
+%%% IRL as a Maximum Margin Planning %%%
+
+Given a set of expert demonstrations $D=\left\{ \xi_i \right\}_{i=1}^{N}$, where each trajectory $\xi_i$ consists of a sequence of state-action pair $\xi_i = \left\{ (s_j, a_j) \right\}_{j=1}^{K}$, the goal of IRL is to infer the underlying reward function that leads to the policy $\pi$. 
+We parametrized the reward function $r$ with $\theta$. \citet{abbeel2004apprenticeship} proposed a strategy of matching feature expectations between the demonstration policy and the learner's behavior. 
+
+\citet{ratliff2006maximum} proposed a clever framework called \textit{Maximum Margin Planning} (MMP), in which learning to plan so as to mimic the expert behavior is cast as a structured prediction problem. Under the structured margin criteria, the objective can be formulated in the following form:
+
 % Under the standard definition of Markov Decision Process (MDP). 
-Modeling the behavior of the export naturally lead to different formulation of the objective function. If the problem is cast as a maximum margin structured prediction framework \cite{ratliff2006maximum}, the resulting objective function leads to the form of
-
 \begin{align}
-L(\theta) = \frac{1}{N} \sum^{N}_{i=1} \beta_i ( \max_{\mu \in \mathbb{G}_i}(\theta^T F_i + l_i^T)\mu - \theta^TF_i\mu_i )^q +  \frac{\lambda}{2} \| \theta \|^2
+L(\theta) = \frac{1}{N} \sum^{N}_{i=1} \beta_i ( \max_{\mu \in \mathbb{G}_i}(\theta^T F_i + l_i^T)\mu - \theta^TF_i\mu_i )^q +  \frac{\lambda}{2} \| \theta \|^2 \label{equ:mmp_obj}
 \end{align}
-
-where $\mu_i$, $F_i$, and $l_i$ represent the state visited frequencies (SVF), feature matrix, and margin loss vector of the $i^{th}$ trajectory, respectively.
+Here, $\mu_i$, $F_i$, and $l_i$ represent the state visited frequencies (SVF), feature matrix, and margin loss vector of the $i^{th}$ trajectory, respectively. 
+Note that Eq. \ref{equ:mmp_obj} assumes the linearity constraint on the reward function. 
+The parameter $\theta$ is optimized in a way that minimizes the $q$-norm mean losses between the optimal trajectory under the loss-augmented reward structure, and the demonstration trajectories. 
+The loss vector alleviates the ill-posed problem in the standard IRL \cite{abbeel2004apprenticeship}, where trivial solution such as all-zeroed weights guarantees all polices to be optimal.
+The intuition behind MMP implies the resulting solutions should look significantly better than the alternative policies.
 
 %%% ME-IRL %%%
+However, both of the approaches fail to capture the ambiguity of the observed polices. 
+It is worth mentioning that for complex problems such as off-road navigation or racing planning, the assumption on the optimality of the demonstrations is indeed strong. In fact, the optimal policy is usually unknown, and the behaviors may differ from each expert player.
+Specifically, when the demonstrations are imperfect, or the planning algorithms captures only part of the relevant feature space, the resulting reward function from the previous approaches cannot perfectly describe the observed trajectories. 
+In this light, \citet{ziebart2008maximum} reformulated the problem under the principle of maximum entropy. 
+The resulting algorithm, known as maximum entropy IRL (ME-IRL), models the demonstrations with a stochastic policy by assuming the probability of executing of each trajectory being exponentially proportional to its total accumulated rewards. 
+The gradient of the objective function under linear reward function is simply the difference between the expected empirical feature counts and the learner's expected feature counts. 
 
-An alternative approach is to explicitly loosen the optimality assumption of expert behavior by modeling the demonstration with a stochastic policy. \citet{ziebart2008maximum} reformulates the problem under the principle of maximum entropy. The resulting algorithm, known as maximum entropy IRL (ME-IRL), assumes the preference of each trajectory is exponentially proportional to its total accumulated rewards. The gradient of the objective function under linear reward function is simply the difference between the expected empirical feature counts and the learner's expected feature counts. 
 
 %%% ME-DIRL %%%
 
@@ -127,20 +212,25 @@ An alternative approach is to explicitly loosen the optimality assumption of exp
 	\end{center}
 \end{figure} 
 
-Recently, \citet{wulfmeier2015maximum} shows that the gradient calculation in ME-IRL can be naturally extended to the back-propagation in the standard deep supervised learning. By framing the problem within the standard Bayesian inference as MAP estimation. The objective function can now be defined as the negative log-likelihood of the observed demonstrations. 
+Recently, \citet{wulfmeier2015maximum} shew that the gradient calculated in ME-IRL can be naturally extended to the back-propagation in the standard deep supervised learning. 
+By re-framing the problem within the standard Bayesian inference as a MAP estimation problem, the objective function is simply: 
 
 \begin{align}
-L(\theta) = \log P(D,\theta|r) = \log P(D|r) + \log P(\theta) \label{equ:irl_obj}
+L(\theta) = \log P(D,\theta|r) = \log P(D|r) + \log P(\theta) \label{equ:dirl_obj}
 \end{align}
 
-The objective function can be interpreted as the data term $L_{D}$ and a standard weight decay term $L_{\theta}$ as model regularization. The gradient of the former term is simply:
+The negative log-likelihood contains two terms: the data term $L_{D}$ and a standard weight decay term $L_{\theta}$ as the regularization. 
+The gradient of the first term is simply:
 
 \begin{align}
 \frac{\partial L_D}{\partial \theta} &= \frac{\partial L_D}{\partial r} \frac{\partial r}{\partial \theta} \\
-&= (\mu_D - \mathbb{E}[\mu]) \cdot \frac{\partial r}{\partial \theta}
+&= (\mu_D - \mathbb{E}[\mu]) \cdot \frac{\partial r}{\partial \theta} \label{equ:dirl_grad}
 \end{align}
 
-Since the reward function is approximated by a deep network, the latter term $\partial r / \partial \theta$ fits with the the back-propagation, and the objective function can be optimized using gradient-based approach. This framework, called deep maximum entropy deep inverse reinforcement learning (ME-DIRL or simply DIRL) has shown to successfully apply in urban autonomous navigation \cite{wulfmeier2016watch}. The use of deep neural net provides a more powerful non-linear reward function approximator. The schematic illustration of the DIRL is summarized in Fig. \ref{fig:dirl_diagram}.
+Note the gradient degenerate to ME-IRL if the reward function is linear with respect to input feature. 
+If the reward function is approximated by a deep network, the latter term $\partial r / \partial \theta$ can be calculated efficiently under back-propagation, and the objective function can be optimized using gradient-based approaches. 
+This framework, called deep maximum entropy deep inverse reinforcement learning (ME-DIRL or simply DIRL) has shown to successfully apply in urban autonomous navigation \cite{wulfmeier2016watch}. 
+The schematic illustration of the DIRL is summarized in Fig. \ref{fig:dirl_diagram}.
 
 %%% Other Non linear IRL %%%
 % An alternative choice for non-linear IRL is to use Grassian process \cite{levine2011nonlinear}. 
