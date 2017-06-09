@@ -40,7 +40,7 @@ Section \ref{sec:vehicle_model} summarizes the derivation of two vehicle models.
 
 % Definition/Notation of predictive model
 
-The forward predictive model $\dot{x}=f(x,u)$ is defined as a function that maps a pair of control action $u \in \mathcal{A}$ and state $x \in \mathcal{S}$ to the next state. As shown in Fig. \ref{fig:vehicle_model_frame}, in our application, the control space consists of the $2DOF$ executed velocity command, i.e. forward and rotational velocity, and the state space consists of the actual velocity responses in $2D$ plane, i.e. $[v_x, v_y, w]$, in the local frame. It is worth mentioning that the sliding velocity $v_y$ is not negligible on the rough terrain, and in fact plays an crucial role for off-road application.
+The forward predictive model $\dot{x}=f(x,u)$ is defined as a function that maps a pair of control action $u \in \mathcal{A}$ and state $x \in \mathcal{S}$ to the next state. As shown in Fig. \ref{fig:vehicle_model_frame}, in our application, the control space consists of the $2DOF$ executed velocity command, i.e. forward and rotational velocity, and the state space consists of the actual velocity responses in $2D$ plane, i.e. $[v_x, v_y, w]$, in the local frame. It is worth mentioning that the sliding velocity $v_y$ is not negligible on the rough terrain, and in fact plays a crucial role for off-road application.
 
 % Previous works
 
@@ -71,7 +71,7 @@ We verified the performances of the two models on predicting vehicle states resp
 The block diagram of our planner is shown in Fig. \ref{fig:planner_module}. It can be separated into two modules with respect to functionality. The collision check module constructed a global simplified occupancy grid given the point cloud data and the odometry. The local planner module takes the odometry and the goal state as inputs, performs minimal calculations, and finally sends the velocity commands directly to the on-board velocity controller.
 The two modules interact with each other in the way that the local planner acquires collision detection from roll-out map.
 % then communicated with RRT-based planner for collision check service. 
-The detail of two modules is described as follow:
+The detail of two modules is described as follows:
 
 
 \subsection{Collision Check Module}
@@ -95,7 +95,7 @@ Occupancy grid is a commonly-used data structure for obstacles detection. It sto
 		\subcaption{Height map algorithm}
 		\label{fig:collision_height_map}
 	\end{subfigure}
-	\caption{Three different methods of collision check. Note that for (b), the original and the the processed point cloud is represented with white and colored dot, respectively.}
+	\caption{Three different methods of collision check. Note that for (b), the original and the processed point cloud is represented with white and colored dot, respectively.}
     \label{fig:collision}
 \end{figure}
 
@@ -107,7 +107,7 @@ The original method implemented on the vehicle uses ODE and mesh data to simulat
 The second approach for collision check module is using RANSAC segmentation from Point Cloud Library (PCL) to fit the plane model. In our case, the plane model is the ground of our testing environment. We extract the outliers from RANSAC for obstacle detection. As shown in Fig. \ref{fig:collision_ransac}, the white point cloud is the original data, while the colored point cloud is the outliers from RANSAC. 
 
 \subsubsection{iii. Height Map Algorithm}
-The third method we used is height map algorithm. This is a simple and efficient algorithm in terms of computation. It calculates the height differences within one grid. If the height difference is greater than user-defined threshold, it will be categorized as an obstacle. As shown in Fig. \ref{fig:collision_height_map}, the artificial obstacle is approximately 1.5 meters. We set the threshold to be 1 meter. Thus it will be recognized as an obstacle. 
+The third method we used is height map algorithm. This is a simple and efficient algorithm in terms of computation. It calculates the height differences within one grid. If the height difference is greater than user-defined threshold, it will be categorized as an obstacle. As shown in Fig. \ref{fig:collision_height_map}, the artificial obstacle is approximately 1.5 meters. We set the threshold to be 1 meter. Thus, it will be recognized as an obstacle. 
 
 
 % conclusion
@@ -159,7 +159,7 @@ Instead of using traditional search-based planner such as \textbf{A*} or \textbf
 
 % Simulation
 Our planner is built upon Open Motion Planning Library (OMPL) \cite{sucan2012the-open-motion-planning-library}, an open-source motion planning library that includes a wide range of sample-based planners and a built-in simulation platform called \textit{OMPL.app}. 
-The template of the sampled-based planner is determined from a simulation on OMPL.app, where we generate several maze scaneraio and implement the vehicle response model on several available off-the-shelf planners. The simulated benchmark result is shown in Table \ref{table:simulation-benchmark}. The simulation environment is shown in Fig. \ref{fig:rrt-sim-maze}, with demo video available at \url{http://ppt.cc/sBLAh}. We observe that the RRT algorithm gives a faster solving time and a smaller path clearance under our vehicle model constraint. With other advantages such as flexibility and extendibility, we use RRT as our planner template and extend it tor our own purpose.
+The template of the sampled-based planner is determined from a simulation on OMPL.app, where we generate several mazes scenario and implement the vehicle response model on several available off-the-shelf planners. The simulated benchmark result is shown in Table \ref{table:simulation-benchmark}. The simulation environment is shown in Fig. \ref{fig:rrt-sim-maze}, with demo video available at \url{http://ppt.cc/sBLAh}. We observe that the RRT algorithm gives a faster solving time and a smaller path clearance under our vehicle model constraint. With other advantages such as flexibility and extendibility, we use RRT as our planner template and extend it tor our own purpose.
 
 
 \subsubsection{Implementation Details}
@@ -185,7 +185,7 @@ Then, the shooting method is used to determined the angular velocity command.
 As shown in the dotted circle in Fig. \ref{fig:rrt}, the basic RRT-like algorithm preserves a fixed extended step size throughout planning time. 
 While using a larger step size may results in a much smaller solving time yet a jerky trajectory, the trajectory propagated with a smaller step size is usually smoother but computational expensive. 
 The former one is usually referred to \textit{Connected RRT}, and the latter one is called \textit{Extended RRT}. 
-In our implementation, instead of fixing the control duration as a hyperparameter, we randomly sample the control duration. 
+In our implementation, instead of fixing the control duration as a hyper-parameter, we randomly sample the control duration. 
 Our motivations come from the results of our maze simulation, where we observe that the control duration affects the performance of the planner a lot in each different maze configuration. 
 We believe loosening the step size constraint with such randomly sample mechanism will generalize our planner for various situations encountered at off-road environment. 
 
@@ -202,7 +202,7 @@ Finally, We also follow the same setting by using the traveling time instead of 
 The planner thus optimizes the trajectory by minimizing the traveling time and is encouraged for an agile maneuvering under the dynamics constraints.
 
 % re-planning
-The re-planning process is designed as follow: at the beginning of each planner loop, vehicle status, collision check map, and goal point are updated to formulate a RRT control-space planning problem. 
+The re-planning process is designed as follows: at the beginning of each planner loop, vehicle status, collision check map, and goal point are updated to formulate a RRT control-space planning problem. 
 The problem is solved multiple times, and each of the best solution in each iteration is stored.
 When the computational time exceeds, the solution with minimal cost is outputted for execution. 
 Note that the growth tree is abandoned when the next solving iteration starts. 

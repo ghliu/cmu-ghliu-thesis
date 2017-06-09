@@ -4,16 +4,16 @@
 
 In this chapter, we present an alternative end-to-end controller that maps the multi-sensor input directly to the action space based on deep reinforcement learning (DRL), a recently very popular research field. 
 We propose two novel methods that effectively train the multimodal sensor policy without over-fitting to partial sensor subset, namely \textit{Sensor Dropout} and \textit{Auxiliary Loss}. 
-Two popular continuous action DRL algorithms namely Normalized Advantage Function (NAF) \cite{CDQN} and Deep Deterministic Policy Gradient (DDPG) \cite{DBLP:journals/corr/LillicrapHPHETS15}, are picked and augmented to accept multi-modal input. The resulting autonomous navigation policy is tested exhaustively to verify its performance in a physics-based gaming environment called TORCS \cite{wymann2000torcs}. 
+Two popular continuous action DRL algorithms namely Normalized Advantage Function (NAF) \cite{CDQN} and Deep Deterministic Policy Gradient (DDPG) \cite{DBLP:journals/corr/LillicrapHPHETS15}, are picked and augmented to accept multimodal input. The resulting autonomous navigation policy is tested exhaustively to verify its performance in a physics-based gaming environment called TORCS \cite{wymann2000torcs}. 
 
 Through extensive empirical testing we show the following exciting results,
 \begin{enumerate}
 
 	\item Multimodal-DRL with Sensor Dropout(SD) reduces performance drop in a noisy environment from $\approx 40\%$ to just $10\%$, when compared to a baseline single sensor system.
 	
-	\item Policies learned using SD best leverage the multi-modal setting by greatly reducing over-dependence on any one sensing modality. Additionally, for each sensor it was observed that SD enforces sparsity and promotes each sensor to base the policy primarily on intuitive and salient features.
+	\item Policies learned using SD best leverage the multimodal setting by greatly reducing over-dependence on any one sensing modality. Additionally, for each sensor it was observed that SD enforces sparsity and promotes each sensor to base the policy primarily on intuitive and salient features.
 	
-	\item A multi-modal policy with SD guarantees functionality even in a face a sensor failure. This is a huge plus and the best use-case for the need for redundancy in safety-critical application like autonomous navigation.
+	\item A multimodal policy with SD guarantees functionality even in a face a sensor failure. This is a huge plus and the best use-case for the need for redundancy in safety-critical application like autonomous navigation.
 
 \end{enumerate}
 
@@ -27,14 +27,14 @@ Section \ref{sec:mdrl-proposed} introduces two methods on effectively training a
 \section{Proposed Methods} \label{sec:mdrl-proposed}
 
 % \subsection{Motivation} 
-Multi-modal DRL aims to leverage the availability of multiple, potentially imperfect, sensor inputs to improve learned policy. Most autonomous driving vehicles have been equipped with an array of sensors like GPS, Lidar, Camera, and Odometer, etc \cite{hudda2013self}. While one would offer a long range noisy estimate, the other would offer a shorter range accurate one. When combined though, the resulting observer will have a good and reliable estimate of the environment. This problem is critical as a further step toward the real-world robotics application given the current state-of-the-art DRL agents on many realistic simulators. 
+Multimodal DRL aims to leverage the availability of multiple, potentially imperfect, sensor inputs to improve learned policy. Most autonomous driving vehicles have been equipped with an array of sensors like GPS, Lidar, Camera, and Odometer, etc \cite{hudda2013self}. While one would offer a long range noisy estimate, the other would offer a shorter range accurate one. When combined though, the resulting observer will have a good and reliable estimate of the environment. This problem is critical as a further step toward the real-world robotics application given the current state-of-the-art DRL agents on many realistic simulators. 
 
 
-\subsection{Multi-modal Network Architecture}
+\subsection{Multimodal Network Architecture}
 
 % Feature Extraction Module %
 
-We denote a set of observations composed from $M$ sensors as, $S = [S^{(1)}~S^{(2)}~..~S^{(M)}]^T$, where $S^{(i)}$ stands for observation from $i^{th}$ sensor. In the multi-modal network, each sensory signal is pre-processed along independent paths. Each path has a feature extraction module with an appropriate network architecture, using randomly initialized or pre-trained weights. In this work, we use three different inputs namely image, laser scan and physical parameters (like wheel speed, position, odometry, etc. The details of each of the feature extraction module are listed in the Appendix. The modularized feature extraction stages for multiple inputs naturally allows for independent extraction of salient information that is transferable (with some tuning if needed) to other applications like collision avoidance, pedestrian detection and tracking, etc. The schematic illustration of modularized Multi-modal architecture is shown in Fig. \ref{fig:Multi-SD}. The outputs of feature extraction modules are eventually flattened and concatenated to form the multi-modal state. 
+We denote a set of observations composed from $M$ sensors as, $S = [S^{(1)}~S^{(2)}~..~S^{(M)}]^T$, where $S^{(i)}$ stands for observation from $i^{th}$ sensor. In the multimodal network, each sensory signal is pre-processed along independent paths. Each path has a feature extraction module with an appropriate network architecture, using randomly initialized or pre-trained weights. In this work, we use three different inputs namely image, laser scan and physical parameters (like wheel speed, position, odometry, etc. The details of each of the feature extraction module are listed in the Appendix. The modularized feature extraction stages for multiple inputs naturally allows for independent extraction of salient information that is transferable (with some tuning if needed) to other applications like collision avoidance, pedestrian detection and tracking, etc. The schematic illustration of modularized Multimodal architecture is shown in Fig. \ref{fig:Multi-SD}. The outputs of feature extraction modules are eventually flattened and concatenated to form the multimodal state. 
 
 \subsection{Sensor-based Dropout (SD)} \label{sec:SD}
 
@@ -76,12 +76,12 @@ An alternative interpretation of the SD-augmented policy is that sub-policy indu
 
 Despite the expectation of the total policy gradients for each sub-policy is the same, SD provides no guarantees on the consistency of these actions. 
 To encourage the policy network to extract salient features from each sensor that can be embedded with similar representation in the policy network, we further augment an auxiliary loss that penalizes the inconsistency among $\mu_{c_j}$. 
-This additional penalty term provides an alternative gradient that reduces the variation of the ultimate polciy, i.e. $Var \left[ \mu_{\mathbf{c}\sim \mathbb{P}} \right]$.
+This additional penalty term provides an alternative gradient that reduces the variation of the ultimate policy, i.e. $Var \left[ \mu_{\mathbf{c}\sim \mathbb{P}} \right]$.
 % In fact, policy gradients point the sub-policy toward maximum value state yet has no guarantees on the consistency provides only the (noisy) direction toward In fact, if the environment provides only sparse reward signal, the sub-policy is trained 
 % To encourage the policy network to extract salient features from each sensor that \textit{share} representative information for decision making, we augment an auxiliary loss that penalizes the inconsistency among $\mu_{c_j}$. 
 
 The mechanism is motivated from the recent successes \cite{DBLP:journals/corr/GuLGTL16,mirowski2017a,lample2016playing,dosovitskiy2016learning} that exploit how adding the auxiliary tasks help greatly improve both agent's performance and convergence rate. However, unlike most previous works that pick up the auxiliary tasks carefully from the ground truth environment, we formulate the \textit{target action} from the policy network itself. 
-Under the standard actor-critic architecture, the target action is defined as the sub-policy $\tilde{\mu}_{c^{*}}$ among target actor network $\tilde{\mu}_{\mathbf{c}\sim \mathbb{P}}$ that maximize the the target critic values $\tilde{Q}$.
+Under the standard actor-critic architecture, the target action is defined as the sub-policy $\tilde{\mu}_{c^{*}}$ among target actor network $\tilde{\mu}_{\mathbf{c}\sim \mathbb{P}}$ that maximize the target critic values $\tilde{Q}$.
 \begin{align}
 L_{aux} &= \lambda \sum_{i=1}^N (\mu_{c_j}(s_i)-\tilde{\mu}_{c^{*}}(s_i))^2 \\
 \text{where  } c^{*} &= \mathop{\mathrm{argmax}}_{c_j \sim \mathbb{P}} \sum_{i=1}^N \tilde{Q}(s_i,\tilde{\mu}_{c_j}(s_i))
@@ -92,7 +92,7 @@ L_{aux} &= \lambda \sum_{i=1}^N (\mu_{c_j}(s_i)-\tilde{\mu}_{c^{*}}(s_i))^2 \\
 % \mu^{*} &= \mathop{\mathrm{argmax}}_{\mu \in \left \{ \mu_{c_j} \right \} \text{, where} c_j \sim \mathbb{P}} \frac{1}{N} \sum_{i=1}^N Q(s_i,\mu(s_i))
 % \end{align}
 % $\tilde{\mu}$ and $\tilde{Q}$ represent the target actor and target critic network that maintain an exponentially moving average to stabilize training. 
-Here, $\lambda$ is an additional hyperparameter that indicates the importance ratio between the two losses, and $N$ is the batch size for off-policy learning.
+Here, $\lambda$ is an additional hyper-parameter that indicates the importance ratio between the two losses, and $N$ is the batch size for off-policy learning.
 
 % The derived auxiliary loss therefore preserves a temporal-difference (TD) method that \textit{learn a guess from a guess} \cite{}. 
 
@@ -116,7 +116,7 @@ In this section, we outline our experimental setup using TORCS simulator and the
 \textbf{TORCS Simulator}
 The proposed approach was verified on TORCS \cite{wymann2000torcs}, a popular open-source car racing simulator that is capable of simulating physically realistic vehicle dynamics as well as multiple sensing modalities \cite{GymTORCS} to build sophisticated AI agents. In order to make the learning problem representative of the real-world setting, we picked the following sensors from the TORCS package: the 2D laser range finder, front-view camera with RGB channel, vehicle state - position and speed. The action space is a continuous vector in $\mathbb{R}^2$, whose elements represent steering angle, and acceleration. 
 
-As shown in Fig. \ref{fig:TORCS}, the physical state is a $10$ DOF hybrid state, including $3$D velocity ($3$ DOF), position and orientation with respect to track center-line ($2$ DOF), and finally rotational speed of $4$ wheels ($4$ DOF) and engine ($1$ DOF). Each laser scan is composed of $19$ readings spanning a $180\degree$ field-of-view in the the front of car. Finally, camera provides RGB channels with resolution $64 \times 64$. We use the following sensing modalities for our state description: (1) We define \emph{Sensor 1} as a hybrid state containing physical-based information such as odometry and simulated GPS signal. (2) \emph{Sensor 2} consists of $4$ consecutive laser scans (i.e., at time $t$, we input scans from times $t,~ t-1,~t-2~\&~t-3$). Finally, as \emph{Sensor 3}, we supply $4$ consecutive color images capturing the car's front-view. These three representations are used separately to develop our baseline uni-modal sensor policies. The multi-modal state on the other hand has access to all sensors at any given point. When Sensor Dropout (SD) is applied, agent will randomly lose access to a strict subset of sensors. The categorical distribution is initialized with a uniform distribution among total $7$ possible combinations of sensor subset, and the best learned policy is reported here. 
+As shown in Fig. \ref{fig:TORCS}, the physical state is a $10$ DOF hybrid state, including $3$D velocity ($3$ DOF), position and orientation with respect to track center-line ($2$ DOF), and finally rotational speed of $4$ wheels ($4$ DOF) and engine ($1$ DOF). Each laser scan is composed of $19$ readings spanning a $180\degree$ field-of-view in the front of car. Finally, camera provides RGB channels with resolution $64 \times 64$. We use the following sensing modalities for our state description: (1) We define \emph{Sensor 1} as a hybrid state containing physical-based information such as odometry and simulated GPS signal. (2) \emph{Sensor 2} consists of $4$ consecutive laser scans (i.e., at time $t$, we input scans from times $t,~ t-1,~t-2~\&~t-3$). Finally, as \emph{Sensor 3}, we supply $4$ consecutive color images capturing the car's front-view. These three representations are used separately to develop our baseline uni-modal sensor policies. The multimodal state on the other hand has access to all sensors at any given point. When Sensor Dropout (SD) is applied, agent will randomly lose access to a strict subset of sensors. The categorical distribution is initialized with a uniform distribution among total $7$ possible combinations of sensor subset, and the best learned policy is reported here. 
 
 An exploration strategy is injected adding an Ornstein-Uhlenbeck process noise \cite{uhlenbeck1930theory} to the output of the policy network. The choice of reward function is slightly different from  \citet{DBLP:journals/corr/LillicrapHPHETS15} and \citet{A3C} as an additional penalty term to penalize side-ways drifting along the track was added. In practice, this modification leads to more stable policies during training \cite{BenLau16}. 
 
@@ -162,7 +162,7 @@ We used Adam \cite{adam} for learning the network parameters. For DDPG, the lear
         \subcaption{DDPG}
         \label{fig:training_exp_ddpg}
     \end{subfigure}
-    \caption{Training performance comparison of three baseline single sensor policies, and the proposed multi-modal policies, with and without Sensor Dropout.}
+    \caption{Training performance comparison of three baseline single sensor policies, and the proposed multimodal policies, with and without Sensor Dropout.}
     \label{fig:training_exp}
 \end{figure}
 
@@ -209,9 +209,9 @@ Note that for both algorithms, the final performance for multimodal sensor polic
 \end{figure}
 
 \textbf{Uni-modal policies:} 
-Note that, we assume perfect sensing during the training. However, to test performance in a more realistic scenario, we simulate mildly imperfect sensing by adding gaussian noise. The perturbation sensitivity is compatible with a more standard Average Fisher Sensitivity (AFS) according to \cite{progressive_net}. Policy performance with and without noise is plotted for comparison in Fig. \ref{fig:actual_robust} and \ref{fig:relative_robust}. While Fig. \ref{fig:actual_robust} plots the actual reward performance, Fig. \ref{fig:relative_robust} summarizes the relative performance compared with a noiseless environment. 
+Note that, we assume perfect sensing during the training. However, to test performance in a more realistic scenario, we simulate mildly imperfect sensing by adding Gaussian noise. The perturbation sensitivity is compatible with a more standard Average Fisher Sensitivity (AFS) according to \cite{progressive_net}. Policy performance with and without noise is plotted for comparison in Fig. \ref{fig:actual_robust} and \ref{fig:relative_robust}. While Fig. \ref{fig:actual_robust} plots the actual reward performance, Fig. \ref{fig:relative_robust} summarizes the relative performance compared with a noiseless environment. 
 
-The performance of the NAF agent drops dramatically when the noise is introduced. We also observe that NAF in the multi-modal is sensitive to states from sensors which are easily interpretable such as laser scanners. This effect shows that using an over-complete state representation holds a risk of the agent learning an undesired policy where the influence of different features gets unbalanced. The regularization introduced by Sensor Dropout alleviates this issue and learns a stable policy on both algorithms, with only slight decrease of the performance compared with multi-modal agents trained without SD. In summary, with the addition of noise the performance drop is sometimes severe in a single input policy, as seen for NAF with physical state input. In comparison, the drop is ore contained for the multi-modal policy and almost negligible when Sensor Dropout is used.
+The performance of the NAF agent drops dramatically when the noise is introduced. We also observe that NAF in the multimodal is sensitive to states from sensors which are easily interpretable such as laser scanners. This effect shows that using an over-complete state representation holds a risk of the agent learning an undesired policy where the influence of different features gets unbalanced. The regularization introduced by Sensor Dropout alleviates this issue and learns a stable policy on both algorithms, with only slight decrease of the performance compared with multimodal agents trained without SD. In summary, with the addition of noise the performance drop is sometimes severe in a single input policy, as seen for NAF with physical state input. In comparison, the drop is ore contained for the multimodal policy and almost negligible when Sensor Dropout is used.
 
 
 \begin{table}[t]
@@ -238,7 +238,7 @@ Another intuitive baseline for the multi-sensor problem is to train each uni-mod
 For this, we take the best trained policies of each sensor, and train a meta controller that takes the concatenated feature state from each sensor and output a $3 DOF$ softmax layer as the probability of choosing each uni-modal sensor policy. The meta controller is trained under the standard policy gradient method, which can be found in \cite{meta_policy} for more details.
 
 Policy performance with and without noise for two approaches are summarized in Table \ref{table:multiple-uni-baseline}. 
-The performance of the baseline policy drops dramatically once noise is introduced, which implies that without any regularization the uni-modal policy is prone to overfit. In fact, with the addition of noise the performance drop is sometimes severe in physical-based or laser-based policy. 
+The performance of the baseline policy drops dramatically once noise is introduced, which implies that without any regularization the uni-modal policy is prone to over-fit. In fact, with the addition of noise the performance drop is sometimes severe in physical-based or laser-based policy. 
 % We also suspect it is because of the inconsistency of actions when switching among different uni-modal policies. 
 In comparison, the policy trained with SD reaches a higher score in both scenarios, and the drop is almost negligible.
  
@@ -249,7 +249,7 @@ In comparison, the policy trained with SD reaches a higher score in both scenari
 % B. Without Noise experiment % 
 % 1. DDPG looks well
 % 2. Uni-modal NAF : actual reward decrease proportionally when state dim. increase or state is too abstract.
-% -> we claim Multi-modal setting help alleviate the situation
+% -> we claim Multimodal setting help alleviate the situation
 % C. With Noise experiment % 
 % 1. NAF perform poorly when noise is introduced. DDPG on the other hand is less sensitive to noise 2. Introducing of SD help both algorithm 
 
@@ -290,7 +290,7 @@ In comparison, the policy trained with SD reaches a higher score in both scenari
 \end{table}
 
 % \textbf{Policy Robustness Analysis:}
-In this part, we further validate our hypothesis that SD reduces the learned policy's acute dependence on a subset of sensors in a multi-modal setting. First, we considered a scenario when malfunction of a sensor has been detected by the system, and the agent need to rely on the remaining sensors to make the decision. During testing, we randomly blocked off part of the sensor modules, and scaled the rest of observation using the same rescaling mechanism as proposed in Section \ref{sec:SD}. Fig. \ref{fig:random_sensor_failure} reports the average of the normalized reward of each model. A naive multimodal policy without any stochastic regularization (blue bar) performs poorly in the face of partial sensor failure and transfer tasks. Adding original Dropout does make the policy more generalized, yet the performance is not comparable with SD or with SD and auxiliary loss. Interestingly, by reducing the variance of the multimodal sensor policy with auxiliary loss, policy tends to have a better generalization among other environments.
+In this part, we further validate our hypothesis that SD reduces the learned policy's acute dependence on a subset of sensors in a multimodal setting. First, we considered a scenario when malfunction of a sensor has been detected by the system, and the agent need to rely on the remaining sensors to make the decision. During testing, we randomly blocked off part of the sensor modules, and scaled the rest of observation using the same rescaling mechanism as proposed in Section \ref{sec:SD}. Fig. \ref{fig:random_sensor_failure} reports the average of the normalized reward of each model. A naive multimodal policy without any stochastic regularization (blue bar) performs poorly in the face of partial sensor failure and transfer tasks. Adding original Dropout does make the policy more generalized, yet the performance is not comparable with SD or with SD and auxiliary loss. Interestingly, by reducing the variance of the multimodal sensor policy with auxiliary loss, policy tends to have a better generalization among other environments.
 % We therefore emphasize that introducing SD during training has significant practical benefits, in that the policies induced by different configurations of sensors are learned at the same time. 
 
 \subsubsection{Policy Sensitivity Analysis}
@@ -330,10 +330,10 @@ To better analyze the effects of SD, we report on a the smaller subset by implem
 
 % \textbf{Effect of Auxiliary Loss:}
 In this experiment we verify how the auxiliary loss helps reshape the multimodal sensor policy and reduce the action variance. 
-We extract the representations of the last hidden layer assigned by the policy network throughout an fixed episode. At every time step, the representation induced by each sensor combination is collected. 
+We extract the representations of the last hidden layer assigned by the policy network throughout a fixed episode. At every time step, the representation induced by each sensor combination is collected. 
 Our intuition is that the latent space represents how the policy network interprets the incoming sensor stream for reaction. Based on this assumption, an ideal multimodal sensor policy should map different sensor streams to an similar distribution as long as the information provided by each combination is representative to lead to the same output.
 
-Fig. \ref{fig:aux_pca} shows the two-dimensional Principle Component Analysis (PCA) embedding on the latent space of each sub-policy. The blue dots correspond to the representations induced by the sub-policy that use high dimensional sensor (e.g. vision) as its input. On the other hand, the red dots represent the one with lower sensor stream such as odometry and range finder. Note that in practice, the covariance of the first third principle components contain around $85\%$. We provide the actual covariances for each component in the supplementary material.
+Fig. \ref{fig:aux_pca} shows the two-dimensional Principal Component Analysis (PCA) embedding on the latent space of each sub-policy. The blue dots correspond to the representations induced by the sub-policy that use high dimensional sensor (e.g. vision) as its input. On the other hand, the red dots represent the one with lower sensor stream such as odometry and range finder. Note that in practice, the covariance of the first third principal components contain around $85\%$. We provide the actual covariances for each component in the supplementary material.
 
 As shown in Fig. \ref{fig:aux_pca}, the naive multimodal sensor policy has a scattered distribution over the latent space, indicating that representative information from each sensor is treated very differently. In comparison, the policy trained with SD has a concentrated distribution, yet it is still distinguishable w.r.t. different sensors. Adding the auxiliary training loss encourages the true sensor fusion as the distribution becomes more integrated. During training, the policy is not only forced to explicitly make decisions under each sensor combination, but also penalized with the disagreements among multimodal sensor policies. In fact, as shown in Fig. \ref{fig:action-profile}, the concentration of the latent space directly affect the action variance induced by each sub-policy. We provide the action variance value in the supplementary material.
 
@@ -348,14 +348,14 @@ As shown in Fig. \ref{fig:aux_pca}, the naive multimodal sensor policy has a sca
 \vskip -0.1in
 \centering
 \includegraphics[width=\columnwidth]{./MultimodalDRL/fig/all_policy}
-\caption{The full analysis of the performance of the total $6$ sub-policies. The (1), (2), and (3) labels in y-axis represent physical state, laser, and image, respectively. The x-axis represent the remaining performance w.r.t. the SD policy with all sensor, i.e. (1)+(2)+(3).}
+\caption{The full analysis of the performance of the total $6$ sub-policies. The (1), (2), and (3) labels in y-axis represent physical state, laser, and image, respectively. The x-axis represents the remaining performance w.r.t. the SD policy with all sensor, i.e. (1)+(2)+(3).}
 \label{fig:full-sd-policy}
 \vskip -0.1in
 \end{figure} 
 
 % \textbf{Full Sub-Policy Analysis: }
 The performance of each sub-policy is summarized in Fig. \ref{fig:full-sd-policy}. 
-As shown in the first and third column, the performance of the naive multimodal sensor policy (red) and the policy trained with standard Dropout (blue) drop dramatically as the policies lose access to image, which share $87.9\%$ of the total multimodal state. Though Dropout increases the performance of the policy in the testing environment, the generalization is limited to using full multimodel state  as input. On the other hand, Sensor Dropout (SD) generalize the policy across \textit{sensor module} that make the sub-policies successfully transfer to the testing environment. It is worth mentioning that the policies trained with SD is capable to operate when both laser and image sensor are blocked.
+As shown in the first and third column, the performance of the naive multimodal sensor policy (red) and the policy trained with standard Dropout (blue) drop dramatically as the policies lose access to image, which share $87.9\%$ of the total multimodal state. Though Dropout increases the performance of the policy in the testing environment, the generalization is limited to using full multimodel state  as input. On the other hand, Sensor Dropout (SD) generalize the policy across \textit{sensor module} that make the sub-policies successfully transfer to the testing environment. It is worth mentioning that the policies trained with SD are capable to operate when both laser and image sensor are blocked.
 
 % less sensitive to the sensor dimensionality. 
 % Note that in this experiment, the physical state, laser, and image share the portions of $1.7\%$, $10.3\%$, and $87.9\%$ of the total multimodal state. 
@@ -374,7 +374,7 @@ As shown in the first and third column, the performance of the naive multimodal 
         \subcaption{}
         \label{fig:grad_exp_img}
     \end{subfigure}
-    \caption{(a)The visualization of the magnitude of gradient for each neuron. The whiter color means the higher gradient. The color bar represents three different sensor modules: physical state(blue), Laser(green), and Image(red). (b) The gradient responses of actions on the image input for each of the multi-modal agents. The top $20\%$ gradients are marked red.}
+    \caption{(a)The visualization of the magnitude of gradient for each neuron. The whiter color means the higher gradient. The color bar represents three different sensor modules: physical state(blue), Laser(green), and Image(red). (b) The gradient responses of actions on the image input for each of the multimodal agents. The top $20\%$ gradients are marked red.}
     \label{fig:grad_exp_all}
 \end{figure}
 
@@ -390,7 +390,7 @@ The average gradient in the policy sensitivity section can also be used to visua
 % % 1. training speed (Fast: 0.5 > 0.4 > 0.25 )
 % % 2. performance in both training/testing (Higher: 0.5 < 0.4 < 0.25 )
 % % 3. Individual policy (Higher: 0.5 < 0.4 < 0.25 )
-% Following the notations used in Section \ref{sec:SD-implement}, we observe that as the probabilities $p_1,~p_2$ increase, the policy convergence rate and the normalized average rewards induced by each sensor subset also increase, as described in Section \ref{sec:policy}. However, the performance of the full policy decreases in both training and testing environment. This empirical result suggests a more principled way to apply Sensor Dropout. For instance, we can start with a high value for $(p_1,~p_2)$ and benefit from faster policy convergence for each sensor subset and then gradually decrease the probability to promote fusion. 
+% Following the notations used in Section \ref{sec:SD-implement}, we observe that as the probabilities $p_1,~p_2$ increase, the policy convergence rate and the normalized average rewards induced by each sensor subset also increase, as described in Section \ref{sec:policy}. However, the performance of the full policy decreases in both training and testing environment. This empirical result suggests a more principald way to apply Sensor Dropout. For instance, we can start with a high value for $(p_1,~p_2)$ and benefit from faster policy convergence for each sensor subset and then gradually decrease the probability to promote fusion. 
 
 % \newpage
 
@@ -401,7 +401,7 @@ The average gradient in the policy sensitivity section can also be used to visua
 
 \begin{table}[t]
     \vskip 0.1in
-    \caption{Covariance of the first three Principle Component}
+    \caption{Covariance of the first three Principal Component}
     \label{table:pca-3-covariance}
     \vskip 0.1in
     \centering
@@ -411,7 +411,7 @@ The average gradient in the policy sensitivity section can also be used to visua
     \toprule 
     \centering
      & \multicolumn{3}{c}{NAF} & \multicolumn{3}{c}{DDPG}  \\
-     Principle Component & w/oSD & w/SD & w/SD+aux & w/oSD & w/SD & w/SD+aux \\ \midrule \midrule
+     Principal Component & w/oSD & w/SD & w/SD+aux & w/oSD & w/SD & w/SD+aux \\ \midrule \midrule
      First (\%) & 94.9  &  82.0  &  58.9 & 
                 93.4  &  59.2  &  47.4 \\
      Second  (\%) & 4.1  &  12.3  &  25.2 & 
