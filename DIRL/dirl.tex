@@ -103,6 +103,14 @@ This generalized loss introduces a new parameter $\beta$ that captures on which 
 	\end{center}
 \end{figure} 
 
+\begin{figure}[t]
+	\begin{center}
+		\centerline{\includegraphics[width=0.8\columnwidth]{./DIRL/fig/gradtestImg040.png}}
+		\caption{Final cost map on testing set. The left, middle, and right image represent the output cost map, the same cost map overlapped with expected SVF, and with demonstrations, respectively.}
+		\label{fig:final_cost_map}
+	\end{center}
+\end{figure} 
+
 Following the similar setup in Chapter \ref{chap:rrtplanner}, we use Yamaha Viking VI side-by-side ATV as our main testing platform, with LiDAR as our primary input sensor. 
 For off-road navigation where scenes can change dramatically, LiDAR usually provides a more reliable measurement for the safety concern.
 In addition, informative features such as terrain roughness can be inferred straight-forwardly.
@@ -116,7 +124,7 @@ However, this naive roughness index is sensitive to hyper-parameter such as patc
 In the off-road environment where terrain types can vary a lot, this approach can fail to extract reasonable feature when trail becomes narrow, as shown in the second column of Fig. \ref{fig:lidar_feature_map}. 
 To alleviate this issue, we transfer the original roughness index with the log-scale value. 
 The log scale helps amplify the slight difference among traversible terrains, in which we are in general more interested.
-On the other hand, the non-traversible terrains such as bush or trees are flatten under the log scale. 
+On the other hand, the non-traversible terrains such as bush or trees are flattened under the log scale. 
 Another informative feature map is the relative hight with respect to the vehicle standing level. 
 
 
@@ -125,9 +133,9 @@ Note that both of the feature maps are projected on a top-down view, leaving som
 However, the invisible grids may confuse the network and make the framework fragile to the senses. 
 Though the problem can be alleviated by simply providing an additional feature map that specifies the visibility, it usually requires much more data and the use of convolution layer. \cite{wulfmeier2015maximum,wulfmeier2016watch}
 Since our dataset is relatively small, we alleviate this issue with an alternative approach. 
-Instead, we apply a standard image in-painting technique \cite{telea2004image} that effectively helps infer the the invisible region given the geometric shape of the visible trails. 
+Instead, we apply a standard image in-painting technique \cite{telea2004image} that effectively helps infer the invisible region given the geometric shape of the visible trails. 
 The feature maps before and after the interpolation are shown in the orange and red area in Fig. \ref{fig:lidar_feature_map}, respectively.
 
-The training curve is summarized in Fig. \ref{fig:dirl_learning_curve}, and two testing examples of the intermediate cost maps during training are visualized in Fig. \ref{fig:inter_cost_map}. 
+The training curve is summarized in Fig. \ref{fig:dirl_learning_curve}, and two testing examples of the intermediate cost maps during training are visualized in Fig. \ref{fig:inter_cost_map}. Fially, the resulting cost map on testing data set is shown in Fig. \ref{fig:final_cost_map}.
 
 \end{document}

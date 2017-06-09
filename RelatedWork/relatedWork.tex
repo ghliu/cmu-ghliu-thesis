@@ -7,7 +7,7 @@
 \label{sec:sample_based_planning}
 
 Sample based planners search for the feasible paths through the configuration space in a probabilistic fashion. 
-Similar to graph-based approaches, the validity of configuration space need not to be explicitly formulated, instead only a function that determines whether a specific configuration is valid. 
+Similar to graph-based approaches, the validity of configuration space need not be explicitly formulated, instead only a function that determines whether a specific configuration is valid. 
 The probabilistic property makes sample based planners suitable to tackle high dimensional configuration space planning problems, yet with the trade-off on the sub-optimality of the solution. 
 The Rapidly-exploring Random Tree (RRT) is a sampling based planner which build trees of valid trajectories (edges) between points in configuration space (nodes).
 As shown in Algorithm \ref{alg:RRT} \cite{lavalle1998rapidly}, to grow these graphs a new point in configuration space is sampled, and the closest point on the existing tree is extended towards this sampled point.
@@ -26,11 +26,11 @@ As shown in Algorithm \ref{alg:RRT} \cite{lavalle1998rapidly}, to grow these gra
 \end{algorithm}
 
 The Extend function constructs a linearly trajectory in the configuration space from $x_{nearest}$ towards $x_{sample}$. 
-The extension terminates at $x_{new}$ either when $x_{sample}$ is reached or the trajectory enters an invalid region, which can be specified by the validity function mentioned in the previous paragraph, or a hyperparameter specified as the \textit{step size}. 
+The extension terminates at $x_{new}$ either when $x_{sample}$ is reached or the trajectory enters an invalid region, which can be specified by the validity function mentioned in the previous paragraph, or a hyper-parameter specified as the \textit{step size}. 
 However, The standard RRT planner does not guarantee optimality of the solution. 
 
 \citet{karaman2011sampling} proposed an extension version of RRT that follow a asymptotic convergence to the optimal solution. 
-As shown in Algorithm \ref{alg:RRT_star}, the new algorithm, named RRT*, preserves the original structure yet embeds the the following two additional procedures.
+As shown in Algorithm \ref{alg:RRT_star}, the new algorithm, named RRT*, preserves the original structure yet embeds the following two additional procedures.
 
 \begin{enumerate}
 
@@ -96,7 +96,7 @@ Finally, an advantage function $A^{\pi}(s_t,a_t)$ is defined as the additional r
 
 In high dimensional state/action space, these functions are usually approximated by a suitable parametrization. Accordingly, we define $\theta^Q$, $\theta^V$, $\theta^A$, $\theta^\pi$, and $\theta^\mu$ as the parameters for approximating $Q$, $V$, $A$, $\pi$, and $\mu$ functions, respectively. It was generally believed that using non-linear function approximators for both $Q$ and $V$ functions would lead to unstable learning in practice. Recently, \citet{mnih2013playing} applied two novel modifications, namely \textit{replay buffer} and \textit{target network}, to stabilize the learning with deep nets. Later, several variants were introduced that exploited deep architectures and extended to learning tasks with continuous actions \cite{DBLP:journals/corr/LillicrapHPHETS15,A3C,CDQN,TRPO}. 
 
-To exhaustively analyze the effect of multi-sensor input and the new stochastic regularization technique, we picked two algorithms, namely DDPG and NAF. It is worth noting that the two algorithms are very different, with DDPG being an off-policy actor-critic method and NAF an off-policy value-based one. By augmenting these two algorithms, we highlight that any DRL algorithm, modified appropriately, can benefit from using multiple inputs. Before introducing the multi-modal architecture, we briefly summarize the two algorithms below.
+To exhaustively analyze the effect of multi-sensor input and the new stochastic regularization technique, we picked two algorithms, namely DDPG and NAF. It is worth noting that the two algorithms are very different, with DDPG being an off-policy actor-critic method and NAF an off-policy value-based one. By augmenting these two algorithms, we highlight that any DRL algorithm, modified appropriately, can benefit from using multiple inputs. Before introducing the multimodal architecture, we briefly summarize the two algorithms below.
 
 
 \subsection{Continuous Action Space Algorithms}
@@ -150,7 +150,7 @@ Building on this result, \citet{DBLP:journals/corr/LillicrapHPHETS15} proposed a
 
 \section{Stochastic regularization}
 
-Stochastic regularization is an active area of research in deep learning made popular by the success of, \textit{Dropout} \cite{dropout}. Following this landmark paper, numerous extensions were proposed  to further generalize this idea such as \textit{Blockout} \cite{blockout}, \textit{DropConnect} \cite{dropconnect}, \textit{Zoneout} \cite{zoneout}, etc. In the similar vein, two interesting techniques have been proposed for specialized regularization in the multi-modal setting namely ModDrop \cite{moddrop} and ModOut \cite{modout}. 
+Stochastic regularization is an active area of research in deep learning made popular by the success of, \textit{Dropout} \cite{dropout}. Following this landmark paper, numerous extensions were proposed  to further generalize this idea such as \textit{Blockout} \cite{blockout}, \textit{DropConnect} \cite{dropconnect}, \textit{Zoneout} \cite{zoneout}, etc. In the similar vein, two interesting techniques have been proposed for specialized regularization in the multimodal setting namely ModDrop \cite{moddrop} and ModOut \cite{modout}. 
 Given a much wider set of sensors to choose from, ModOut attempts to identify which sensors are actually needed to fully observe the system behavior. This is out of the scope of this work. Here, we assume that all the sensors are critical and we only focus on improving the state information based on inputs from multiple observers. 
 ModDrop is much closer in spirit to the proposed \emph{Sensor Dropout (SD)}. However, unlike ModDrop, pre-training with individual sensor inputs using separate loss functions is not required. A network can be directly constructed in an end-to-end fashion and \emph{Sensor Dropout} can be directly applied at the sensor fusion layer just like Dropout. Its appeal lies in its simplicity during implementation and is designed to be applicable even to the DRL setting. As far as we know, this is the first attempt at applying stochastic regularization in a DRL setting with the spirit of sensor fusion. 
 
@@ -181,7 +181,7 @@ These problems fall in the category of \textit{inverse} reinforcement learning (
 Given a set of expert demonstrations $D=\left\{ \xi_i \right\}_{i=1}^{N}$, where each trajectory $\xi_i$ consists of a sequence of state-action pair $\xi_i = \left\{ (s_j, a_j) \right\}_{j=1}^{K}$, the goal of IRL is to infer the underlying reward function that leads to the policy $\pi$. 
 We parametrized the reward function $r$ with $\theta$. \citet{abbeel2004apprenticeship} proposed a strategy of matching feature expectations between the demonstration policy and the learner's behavior. 
 
-\citet{ratliff2006maximum} proposed a clever framework called \textit{Maximum Margin Planning} (MMP), in which learning to plan so as to mimic the expert behavior is cast as a structured prediction problem. Under the structured margin criteria, the objective can be formulated in the following form:
+\citet{ratliff2006maximum} proposed a clever framework named \textit{Maximum Margin Planning} (MMP), where learning to plan by mimicking the expert behavior is cast as a structured prediction problem. Under the structured margin criteria, the objective can be formulated in the following form:
 
 % Under the standard definition of Markov Decision Process (MDP). 
 \begin{align}

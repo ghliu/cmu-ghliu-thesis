@@ -118,12 +118,12 @@ Practical problems such as re-planning and optimization are addressed under the 
 The resulting model-predictive planner was tested on the full-size All-Terrain Vehicle (ATV) in the off-road conditions.
 
 In addition, we also present an alternative end-to-end controller that uses multi-sensor input to learn an autonomous navigation policy in a physics-based gaming environment called TORCS \cite{wymann2000torcs}. 
-To show the effectiveness of multi-modal perception, we picked two popular continuous action DRL algorithms namely Normalized Advantage Function (NAF) \cite{CDQN} and Deep Deterministic Policy Gradient (DDPG) \cite{DBLP:journals/corr/LillicrapHPHETS15}, and augmented them to accept multimodal inputs. 
+To show the effectiveness of multimodal perception, we picked two popular continuous action DRL algorithms namely Normalized Advantage Function (NAF) \cite{CDQN} and Deep Deterministic Policy Gradient (DDPG) \cite{DBLP:journals/corr/LillicrapHPHETS15}, and augmented them to accept multimodal inputs. 
 Though a multimodal sensor policy may greatly improve the reward, it might rely heavily on all the inputs to the extent that it may fail completely even if a single sensor broke down fully or partially. This undesirable consequence renders sensor redundancy useless. 
 To ensure that the learned policy does not succumb to such over-fitting, we apply a novel stochastic regularization method called \emph{Sensor Dropout} during training. 
 Our approach reduces the policy sensitivity to a particular sensor subset, and make it capable of functioning even in the face of partial sensor failure. 
-Based on the Sensor Dropout, we further embedded the standard DRL loss with an auxiliary loss that help reduce the action variations of the multi-modal policy. 
-As far as we know, we are the first to address the multi-modal policy learning in terms of sensor fusion.
+Based on the Sensor Dropout, we further embedded the standard DRL loss with an auxiliary loss that help reduce the action variations of the multimodal policy. 
+As far as we know, we are the first to address the multimodal policy learning in terms of sensor fusion.
 
 Through empirical testing we demonstrate that our proposed multimodal sensor policy can 1) operate with minimal performance drop in noisy environments, and 2) remain functional even in the face of a sensor subset failure. 
 Finally, through the visualization of gradients, we show that the learned policies are conditioned on the same latent input distribution despite having multiple sensory observations spaces - a hallmark of true sensor-fusion.
@@ -133,7 +133,7 @@ Note that either the traditional or the end-to-end planner require the cost/rewa
 However, unlike in the urban environment where cost function can be well defined in a rule-based structure, finding a cost function for off-road navigation can be nontrivial and often requires lot of handy tuning. \cite{silver2010learning}
 Here, motivated by the recent successes \cite{wulfmeier2015maximum,wulfmeier2016watch}, we also investigate into the using deep neural network as the function approximator, and infer the cost/reward function under inverse reinforcement learning platform.
 
-The thesis is organized as follow:
+The thesis is organized as follows:
 In Chapter \ref{chap:related_work} we briefly go through the preliminary background, including the basic sample based planner, the formal definition of deep (inverse) reinforcement learning, and the two continuous action agents used in this work.
 In Chapter \ref{chap:rrtplanner} we formulate our model predictive planner, followed with the derivation of vehicle model, detailed planner design for optimal planning, and finally the experimental results on field.
 In Chapter \ref{chap:multimodalDRL} we propose a new technique at the aspect of sensor fusion in order to improve the performance of the end-to-end controller with multi-sensor inputs. 
