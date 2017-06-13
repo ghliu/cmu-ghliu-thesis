@@ -5,7 +5,9 @@
 In this chapter, we propose a model-based local planner for high-speed maneuvering in the off-road navigation application. In order to overcome the highly unpredictable vehicle dynamics in the unstructured terrain, we derive our vehicle model in a data-driven fashion. The high-dimensional vehicle model is used as a standpoint of our model-predictive local planner.
 
 The local planner is constructed with Rapidly-exploring Random Tree (RRT) \cite{kuffner2000rrt} as its template. 
-Despite the fact that sample-based algorithms are generally more suitable for high-dimensional state space planning, it is not straightforward to be extended to kinodynamic planning. To operate to planning process in control space, our planner slightly departs from the standard RRT so as to perform at least a certain level of trajectory optimization given the limited computational cycle. The cost function is designed using traveling time to encourage the vehicle for a more aggressive maneuvering. 
+Despite the fact that sample-based algorithms are generally more suitable for high-dimensional state space planning, it is not straightforward to be extended to kinodynamic planning. 
+To operate to planning process in control space, our planner slightly departs from the standard RRT so as to perform at least a certain level of trajectory optimization given the limited computational cycle. 
+The cost function is designed using traveling time to encourage the vehicle for a more aggressive maneuvering. 
 
 We use height map algorithm to efficiently process the incoming cloud point data and detect collisions in the future. 
 The potential obstacles is accumulated on a simplified occupancy grid to produce a collision check grid map for local planner. 
@@ -40,7 +42,7 @@ Section \ref{sec:vehicle_model} summarizes the derivation of two vehicle models.
 
 % Definition/Notation of predictive model
 
-The forward predictive model $\dot{x}=f(x,u)$ is defined as a function that maps a pair of control action $u \in \mathcal{A}$ and state $x \in \mathcal{S}$ to the next state. As shown in Fig. \ref{fig:vehicle_model_frame}, in our application, the control space consists of the $2DOF$ executed velocity command, i.e. forward and rotational velocity, and the state space consists of the actual velocity responses in $2D$ plane, i.e. $[v_x, v_y, w]$, in the local frame. It is worth mentioning that the sliding velocity $v_y$ is not negligible on the rough terrain, and in fact plays a crucial role for off-road application.
+The forward predictive model $\dot{x}=f(x,u)$ is defined as a function that maps a pair of control action $u \in \mathcal{A}$ and state $x \in \mathcal{S}$ to the next state. As shown in Fig. \ref{fig:vehicle_model_frame}, in our application, the control space consists of the $2DOF$ executed velocity command, \textit{i.e.} forward and rotational velocity, and the state space consists of the actual velocity responses in $2D$ plane, \textit{i.e.} $[v_x, v_y, w]$, in the local frame. It is worth mentioning that the sliding velocity $v_y$ is not negligible on the rough terrain, and in fact plays a crucial role for off-road application.
 
 % Previous works
 
@@ -49,10 +51,10 @@ Here, we limit our scope to a more intuitive yet effective method. Instead of mo
 % The predictive model implicitly includes the effects on 
 
 % First Model
-We derive the model with two different approaches. The first approach is based on the standard system identification process by deriving the transfer function. The forward and angular velocity, i.e. $v_x$ and $w_z$, responses take the forward and angular velocity commands as inputs, respectively. The lateral velocity response on the other hand uses both commands as input. Our observation is that the UGV experiences lateral sliding whenever the rotational speed changes, with the magnitude of the angular acceleration being proportional to the forward velocity. The corresponding block diagram is summarized in Fig. \ref{fig:vehicle_model_block}. The relative position with respect to the origin in local frame can be calculated by integrating through velocities.
+We derive the model with two different approaches. The first approach is based on the standard system identification process by deriving the transfer function. The forward and angular velocity, \textit{i.e.} $v_x$ and $w_z$, responses take the forward and angular velocity commands as inputs, respectively. The lateral velocity response on the other hand uses both commands as input. Our observation is that the UGV experiences lateral sliding whenever the rotational speed changes, with the magnitude of the angular acceleration being proportional to the forward velocity. The corresponding block diagram is summarized in Fig. \ref{fig:vehicle_model_block}. The relative position with respect to the origin in local frame can be calculated by integrating through velocities.
 
 % Second model
-For the second approach, we implement the neural-network model based on previous work \cite{bode2007learning}. As shown in Fig. \ref{fig:vehicle_model_net}, the neural network takes additional informations, such as roll, pitch, and yaw angle, as its input. Note that the squared roll angle is also provided as the fact that from dynamics standpoint, the vehicle should respond in a near symmetrical manner if it is rolled to the right or rolled to the left. 
+For the second approach, we implement the neural-network model based on previous work \cite{bode2007learning}. As shown in Fig. \ref{fig:vehicle_model_net}, the neural network takes additional information, such as roll, pitch, and yaw angle, as its input. Note that the squared roll angle is also provided as the fact that from dynamics standpoint, the vehicle should respond in a near symmetrical manner if it is rolled to the right or rolled to the left. 
 
 We verified the performances of the two models on predicting vehicle states response on the full-size all-terrain vehicle in Section \ref{sec:rrt-experiments}. The two models are referred as \textit{Conventional Dynamic Model} and \textit{NNet Model} for convenience. 
 
@@ -159,7 +161,7 @@ Instead of using traditional search-based planner such as \textbf{A*} or \textbf
 
 % Simulation
 Our planner is built upon Open Motion Planning Library (OMPL) \cite{sucan2012the-open-motion-planning-library}, an open-source motion planning library that includes a wide range of sample-based planners and a built-in simulation platform called \textit{OMPL.app}. 
-The template of the sampled-based planner is determined from a simulation on OMPL.app, where we generate several mazes scenario and implement the vehicle response model on several available off-the-shelf planners. The simulated benchmark result is shown in Table \ref{table:simulation-benchmark}. The simulation environment is shown in Fig. \ref{fig:rrt-sim-maze}, with demo video available at \url{http://ppt.cc/sBLAh}. We observe that the RRT algorithm gives a faster solving time and a smaller path clearance under our vehicle model constraint. With other advantages such as flexibility and extendibility, we use RRT as our planner template and extend it tor our own purpose.
+The template of the sampled-based planner is determined from a simulation on OMPL.app, where we generate several mazes scenario and implement the vehicle response model on several available off-the-shelf planners. The simulated benchmark result is shown in Table \ref{table:simulation-benchmark}. The simulation environment is shown in Fig. \ref{fig:rrt-sim-maze}, with demo video available at \url{http://ppt.cc/sBLAh}. We observe that the RRT algorithm gives a faster solving time and a smaller path clearance under our vehicle model constraint. With other advantages such as flexibility and extendibility, we use RRT as our planner template and extend it for our own purpose.
 
 
 \subsubsection{Implementation Details}
@@ -179,7 +181,7 @@ Fig \ref{fig:rrt} visualizes the RRT tree. Each node represents a $6$ DoF states
 During the standard process when RRT extends its leaf, a sequence of control input and its operation duration should be determined in order to propagate toward an extended state $q_{extend}$ after a random state $q_{random}$ is sampled. 
 In order to perform a smooth control throughout the trajectory for off-road navigation, we first uniformly sample the forward velocity command within an adjustable region. 
 This command region is determined at run-time based on previously issued command, current vehicle status, and previous executed path such that the vehicle will hold the velocity consistency without jerky output. 
-Then, the shooting method is used to determined the angular velocity command.
+Then, the shooting method is used to determine the angular velocity command.
 
 % random step size
 As shown in the dotted circle in Fig. \ref{fig:rrt}, the basic RRT-like algorithm preserves a fixed extended step size throughout planning time. 
@@ -207,7 +209,7 @@ The problem is solved multiple times, and each of the best solution in each iter
 When the computational time exceeds, the solution with minimal cost is outputted for execution. 
 Note that the growth tree is abandoned when the next solving iteration starts. 
 In practical such design prevents the planner from publishing poor solution if bad tree structure is built at the beginning of growing stage. 
-We admit that if an optimal solution can be obtained from one single shot, the replanning setting would have changed significantly \cite{ferguson2006replanning}. 
+We admit that if an optimal solution can be obtained from one single shot, the re-planning setting would have changed significantly \cite{ferguson2006replanning}. 
 It is also worth mentioning that there is a time delay between the time when vehicle status is updated and the time when the velocity command generated by RRT-based planner is executed. 
 To effectively capture the latency, we utilize the same data-driven dynamics model to estimate the vehicle state after such time delay. 
 The parameters used in our local planner are listed in Table \ref{table:rrt-parameters}. 

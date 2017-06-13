@@ -70,7 +70,7 @@ P_{\beta}(\xi_i | r_\theta) &= \frac{1}{Z_\beta} \exp \left( \beta r_\theta(\xi_
 \end{align}
 
 As $\beta$ increases, the exponent term dominates, and the corresponding distribution become sharper. 
-If $\beta \to \infty$, the distribution degenerates to solving the $\arg\max$, i.e. solving the optimal trajectory. 
+If $\beta \to \infty$, the distribution degenerates to solving the $\arg\max$, \textit{i.e.} solving the optimal trajectory. 
 On the other hand, if $\beta \to 1$, the distribution becomes the same form of the one used in ME-IRL.
 In other words, the SSVM-like and CRF-like losses are framed under the same framework, and can be seen as two special cases located at the opposite side of the spectrum. 
 
@@ -117,7 +117,7 @@ In addition, informative features such as terrain roughness can be inferred stra
 We collect the dataset with total 150 human demonstrations covering an off-road testing field at Gascola, PA. Each sample covers the $20m \times 20m$ region in the front of the ATV. Since the Gascola dataset is relatively small, we use a shallow multilayer perception as the cost function. 
 
 The first feature map captures information about terrain roughness.
-As shown in Fig. \ref{fig:lidar_feature_map}, the basic approach to infer the terrain roughness from the raw point cloud is to first divide it into patches. 
+As shown in Fig. \ref{fig:lidar_feature_map}, the basic approach to infer terrain roughness from the raw point cloud is to first divide it into patches. 
 For each patch, a normal plane is fitted using standard least square regression. 
 Once the plane parameters is calculated, the \textit{roughness index} can be inferred by averaging plane variance within each patch. 
 However, this naive roughness index is sensitive to hyper-parameter such as patch size and rescaling factors. 
@@ -125,10 +125,10 @@ In the off-road environment where terrain types can vary a lot, this approach ca
 To alleviate this issue, we transfer the original roughness index with the log-scale value. 
 The log scale helps amplify the slight difference among traversible terrains, in which we are in general more interested.
 On the other hand, the non-traversible terrains such as bush or trees are flattened under the log scale. 
-Another informative feature map is the relative hight with respect to the vehicle standing level. 
+Another informative feature map is the relative height with respect to the vehicle standing level. 
 
 
-The intuition behind the two feature maps is that the vehicle should prefer driving over the terrains that are smoother or at the similar horizontal level of its current local frame.
+The intuition behind the two feature maps is that the vehicle should prefer driving over terrain that is smoother or at the similar horizontal level of its current local frame.
 Note that both of the feature maps are projected on a top-down view, leaving some parts of the feature maps unoccupied. 
 However, the invisible grids may confuse the network and make the framework fragile to the senses. 
 Though the problem can be alleviated by simply providing an additional feature map that specifies the visibility, it usually requires much more data and the use of convolution layer. \cite{wulfmeier2015maximum,wulfmeier2016watch}
@@ -136,6 +136,6 @@ Since our dataset is relatively small, we alleviate this issue with an alternati
 Instead, we apply a standard image in-painting technique \cite{telea2004image} that effectively helps infer the invisible region given the geometric shape of the visible trails. 
 The feature maps before and after the interpolation are shown in the orange and red area in Fig. \ref{fig:lidar_feature_map}, respectively.
 
-The training curve is summarized in Fig. \ref{fig:dirl_learning_curve}, and two testing examples of the intermediate cost maps during training are visualized in Fig. \ref{fig:inter_cost_map}. Fially, the resulting cost map on testing data set is shown in Fig. \ref{fig:final_cost_map}.
+The training curve is summarized in Fig. \ref{fig:dirl_learning_curve}, and two testing examples of the intermediate cost maps during training are visualized in Fig. \ref{fig:inter_cost_map}. Finally, the resulting cost map on testing data set is shown in Fig. \ref{fig:final_cost_map}.
 
 \end{document}
