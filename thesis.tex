@@ -121,7 +121,7 @@
 \pagestyle{empty}
 
 \title{ %% {\it \huge Thesis Proposal}\\
-{\bf Some fancy title}}
+{\bf Motion Planning Approaches for Off-Road Autonomous Navigation}}
 \author{Guan-Horng Liu}
 \date{\today}
 \Year{2017}
@@ -149,37 +149,66 @@ Devin Schwab
 
 \pagestyle{plain} % for toc, was empty
 
-%% Obviously, it's probably a good idea to break the various sections of your thesis
-%% into different files and input them into this file...
-
 \begin{abstract}
 
-% Sensor fusion is indispensable to improve accuracy and robustness in an autonomous navigation setting. However, in the space of end-to-end sensorimotor control, this multimodal outlook has received limited attention. In this work, we propose a novel stochastic regularization technique, called \textit{Sensor Dropout}, to robustify multimodal sensor policy learning outcomes. We also introduce an auxiliary loss on policy network along with the standard DRL loss that help reduce the action variations of the multimodal sensor policy. Through empirical testing we demonstrate that our proposed policy can 1) operate with minimal performance drop in noisy environments, 2) remain functional even in the face of a sensor subset failure. Finally, through the visualization of gradients, we show that the learned policies are conditioned on the same latent input distribution despite having multiple sensory observations spaces - a hallmark of true sensor-fusion. This efficacy of a multimodal policy is shown through simulations on TORCS, a popular open-source racing car game. 
-% Suitable metrics have been devised to study this behavior and highlight its applicability to other domains that operate in multimodal settings. 
+% Recently, great strides have been made in the development of autonomous driving technologies, energized by the successful demonstrations by some teams at the DARPA Urban Challenge.
+While there is a foreseeable trend on operating autonomous driving technologies on-road within decade, researchers have gained great interests in solving extreme/aggressive motion planning in the off-road situations or unstructured terrain. 
+However, the high dimensional configuration space induced inevitably by a more complex vehicle model may break down traditional search based algorithms with computational speed. 
+% , and sample based planner in term of XXX TODO
+Alternatively, though end-to-end learning approaches have great potentials to handle high dimensional state space, in the multi-sensor setting 
+% it provides no guarantees on the sensitivity of the trained policy with respect to each sensor input.
+% To be clear, 
+the learned policy may either rely heavily on all the inputs to the extent that it fails completely if a single sensor becomes unreliable, or become over-dependent on partial sensor subset, rendering sensor redundancy useless. 
+To be clear, in the space of end-to-end sensorimotor control, the sensor fusion outlook, as a indispensable technique to improve accuracy and robustness in modern autonomous navigation systems, has received limited attention. 
+
+% the traditional search based approach may break down once the motion planning shifts to high dimensional space, 
+% not be suitable for solving the motion plann 
+% it operates more like a black box function approximator, and crucial properties such as sensitivity
+
+This thesis explores both traditional motion planning and end-to-end learning algorithms in the off-road settings.
+% on a full-size All-Terrain Vehicle.
+We propose an alternative RRT-based local planner for high-speed maneuvering in high dimensional state space.
+The local planner is modified to solve the minimal traveling-time trajectory problem, and subjected to a data-driven vehicle model.
+% The local planner is subjected to a data-driven vehicle model for configuration state roll-out in high dimensional space, and modified to solve the minimal traveling-time trajectory problem. 
+% We show that the proposed planner can successfully avoid obstacles on a turnpike with vehicle velocity up to maximum operation speed.
+We also propose a novel stochastic regularization technique, called \textit{Sensor} \textit{Dropout}, to robustify end-to-end multimodal sensor policy learning outcomes. 
+% The variance of the resulting policy can be further reduced by introducing an auxiliary loss during training. 
+Through empirical testing we demonstrate that our proposed policy can operate with minimal performance drop in noisy environments, and remain functional even in the face of a sensor subset failure. 
+% Moreover, through the visualization of gradients, we show that the learned policies are conditioned on the same latent input distribution despite having multiple sensory observations spaces - a hallmark of true sensor-fusion. 
+% This efficacy of a multimodal policy is shown through simulations on TORCS, a popular open-source racing car game. 
+Lastly, we investigate into the deep inverse reinforcement learning (DIRL) algorithms that infer the cost, or traversibility, of the unstructured terrain by leveraging a large volume of human demonstration data collected on field. 
+We propose two slight modifications over the current approach \cite{wulfmeier2015maximum} to overcome issues such as sparse gradients, and ambiguity of the demonstration optimality.
+The efficacy of the proposed approaches are tested on a full-size All-Terrain Vehicle, and a physical-based racing car simulator called \textit{TORCS}. 
+% , including explicitly modeling the ambiguity of optimality, and integrating with failure demonstrations to overcome the spatially sparse gradient in DIRL training.
 
 
-  TODO
 \end{abstract}
 
 \begin{acknowledgments}
 
-The author would like to thank ...
-This thesis and my work in graduate school would not be possible without the co
+% This thesis and my work in graduate school would not be possible without the collaboration and guidance of many intelligent people. 
+First, I would like to thank my advisor, Mr. George Kantor, for providing me advices, financial supports, and most importantly introducing me to the Yamaha ATV project that provides me a great opportunity to implement and test algorithms on the full-size autonomous vehicle.
 
-my advisor, George Kantor, for both and financial support
+I would also like to thank all of the members in the Yamaha ATV project, especially Jay Hiramatsu who supports most of the field experiments I need to finish this thesis. I appreciate every valuable discussion with many intelligent students here: Po-Wei, Wei-Hsin, Daniel, Devin, Sai. Discussions with senior PhD students: Avinash Siravuru, Hsiao Ming, and Humphrey Hu really inspire me frequently. 
+I have a big special thank to Po-Wei Chou, both my project-mate and roommate, with whom I enjoy sharing my point of views and discuss. 
+I would not make through my first year here without your helps and collaborations.
+% You help me catch up many most of the crucial knowledge especially in the first year of my master program.
+% , that greatly release my pressure of transfering research field from a more hardware mechanical engineer to software.
 
-Thanks all of the members in the Yamaha project 
-especially Jay and 
-for supporting my on-field testing experiment
+Lastly, I would like to thank my parents for providing me sufficient resources and accesses to education in my life, and supporting most of my career decisions. I believe I owe so much to my girlfriend, Bonnie Chen, for supporting me over the two years of long distance during the master program. I would not make all those tough time through without you beside me:)
 
+% This thesis and my work in graduate school would not be possible without the collaboration and guidance of many intelligent people.
+%   First, I would like to thank my advisors. Both Howie and Reid have provided me with support and guidance, and most importantly have forced me to justify my theories and guided me to many new concepts in robotics. Their advising styles were different, but worked amazingly well together, and I am a smarter person thanks to their influence.
+  
+%   I would like to thank the senior PhD students who I sat near and from whom I absorbed knowledge. Discussions with Glenn, Arun, and Chao frequently inspired me. In addition, discussions and help from Guillaume, Alex, Matt, Julian, Ky, Elena, Breelyn, and many others have both directly influenced my work and generally improved my robotics knowledge.
+%   The former graduate students now at Hebi designed and provided the hardware that first inspired my snake arm planning goals and they have continued to support and improve the hardware.
 
-Humphrey
-Hsiao Ming, 
+%   I also would like to thank Shiyuan Chen, which whom I have extensively collaborated over the course of this thesis and whose work was heavily used in the localization section of this thesis.
 
-Lab mates, Po-Wei Chou, Wei-Hsin Chou, Daniel Lu
-
-my parents and Bonni Chen
-
+%   I owe so much to my parents for providing me with a scientifically rich childhood, always encouraging me to excel.
+  
+%   And of course I would like to thank the love of my life, Katie Brennan, for agreeing to two years of long distance during this masters program.
+  
 \end{acknowledgments}
 
 

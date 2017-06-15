@@ -94,15 +94,7 @@ This generalized loss introduces a new parameter $\beta$ that captures on which 
            	\label{fig:dirl_learning_curve}
     	\end{center}
 \end{figure}
- 
-\begin{figure}[t]
-    	\begin{center}
-    	 \centerline{\includegraphics[width=\columnwidth]{./DIRL/fig/inter_cost_map.png}}
-           	\caption{Samples of intermediate cost maps during training.}
-           	\label{fig:inter_cost_map}
-    	\end{center}
-\end{figure}
- 
+  
 \begin{figure}[t]
     	\begin{center}
     	 \centerline{\includegraphics[width=0.8\columnwidth]{./DIRL/fig/gradtestImg040.png}}
@@ -111,6 +103,14 @@ This generalized loss introduces a new parameter $\beta$ that captures on which 
     	\end{center}
 \end{figure}
  
+\begin{figure}[t]
+      \begin{center}
+       \centerline{\includegraphics[width=\columnwidth]{./DIRL/fig/inter_cost_map.png}}
+            \caption{Samples of intermediate cost maps during training.}
+            \label{fig:inter_cost_map}
+      \end{center}
+\end{figure}
+
 Following the similar setup in Chapter \ref{chap:rrtplanner}, we use Yamaha Viking VI side-by-side ATV as our main testing platform, with LiDAR as our primary input sensor.
 For off-road navigation where scenes can change dramatically, LiDAR usually provides a more reliable measurement for the safety concern.
 In addition, informative features such as terrain roughness can be inferred straight-forwardly.
@@ -136,6 +136,8 @@ Since our dataset is relatively small, we alleviate this issue with an alternati
 Instead, we apply a standard image in-painting technique \cite{telea2004image} that effectively helps infer the invisible region given the geometric shape of the visible trails.
 The feature maps before and after the interpolation are shown in the orange and red area in Fig. \ref{fig:lidar_feature_map}, respectively.
  
-The training curve is summarized in Fig. \ref{fig:dirl_learning_curve}, and two testing examples of the intermediate cost maps during training are visualized in Fig. \ref{fig:inter_cost_map}. Finally, the resulting cost map on testing data set is shown in Fig. \ref{fig:final_cost_map}.
- 
+The training curve is summarized in Fig. \ref{fig:dirl_learning_curve}, with the resulting cost map on testing data set shown in Fig. \ref{fig:final_cost_map}. 
+The training curve converges within $55$ episodes in our Gascola data set, yet the testing result shows its efficacy by capturing untraversible region such as fences, and distinguishing the nuance of terrain roughness on both wide and narrow trails.
+Fig. \ref{fig:inter_cost_map} visualize the two testing examples of the intermediate cost maps during training, with the first and second row represent the intersection of a narrow trail, and a wider trail beside a fence, respectively.
+
 \end{document}
