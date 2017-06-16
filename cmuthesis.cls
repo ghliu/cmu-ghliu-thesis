@@ -68,7 +68,8 @@
 \vskip 3em
 
 \begin{center}
-    School of Computer Science \\
+    The Robotics Institute \\
+    % School of Computer Science \\
     Carnegie Mellon University \\
     Pittsburgh, PA 15213
 \end{center}
@@ -81,7 +82,7 @@
 \begin{center}
     \em
     Submitted in partial fulfillment of the requirements \\
-    for the degree of Masters of Computer Science.
+    for the degree of Masters of Science in Robotics.
 \end{center}
 
 

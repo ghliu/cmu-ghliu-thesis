@@ -5,23 +5,23 @@
 %%% Conclusion %%%
 
 This thesis investigates the application of both traditional motion planning and end-to-end learning algorithms in the off-road settings.
-We first start with a more traditional method by proposing a RRT-based local planner for high-speed maneuvering on a full-size All-Terrain Vehicle. 
-The local planner utilizes a data-driven vehicle model for configuration state roll-out in high dimensional space. 
-Several modifications are implemented in order to efficiently solve the minimal traveling-time trajectory.
-% Several methods are investigated for obstacle detection, with the final version implemented with height map algorithm. 
-A simplified version of occupancy grid is built in global frame, with height map algorithm implemented as the obstacle detection module.
-Results from field experiments show that the proposed planner can successfully avoid obstacles on a turnpike with vehicle velocity up to maximum operation speed.
+We first start with a more traditional method by proposing an RRT-based local planner for high-speed maneuvering on a full-size all-terrain vehicle (ATV). 
+The local planner utilizes a data-driven vehicle model for roll-out in high dimensional state space. 
+Several modifications are implemented to efficiently solve for the minimal traveling-time trajectory.
+A simplified version of occupancy grid is built in the global frame, with the obstacle detection module implemented with height map algorithm.
+Results from field experiments show that the proposed planner can successfully avoid obstacles on a turnpike with vehicle velocity up to the maximum operating speed.
 
-Alternatively, we propose an end-to-end controller that uses multi-sensor input to learn an autonomous navigation policy in a physics-based car-racing simulator.
-In order to make the learning problem representative of the real-world setting, we use a sensor set including front-view camera with RGB channel, laser scan, and physical states such as odometry. 
+Alternatively, we propose an end-to-end controller that uses multi-sensor input to learn an autonomous navigation policy in a physics-based car racing simulator.
+To make the learning problem representative of the real-world setting, we use a sensor set including a front-view camera with RGB channel, laser scan, and physical states such as odometry. 
 We introduce a new stochastic regularization technique called Sensor Dropout to promote an effective fusing of information from multiple sensors. 
 The variance of the resulting policy can be further reduced by introducing an auxiliary loss during training. 
 We show that the aid of Sensor Dropout reduces the policy sensitivity to a particular sensor subset, and makes it capable of functioning even in the face of partial sensor failure. 
-Moreover, the policy network is able to automatically infer the weight locations providing salient information. 
+Moreover, through the visualization of gradients, we show that the learned policies are conditioned on the same latent distribution despite having multiple sensory observations spaces - a hallmark of true sensor-fusion. 
 
-Lastly, we investigate into the deep inverse reinforcement learning (DIRL) algorithms that infer the cost, or traversibility, of the unstructured terrain by leveraging a large volume of human demonstration data collected on field. 
-We propose two slight modifications over the current approach \cite{wulfmeier2015maximum}, including explicitly modeling the ambiguity of the optimality, and integrating with failure demonstrations to overcome the spatially sparse gradient in DIRL training.
-This framework is tested on a full-size all-terrain vehicle (ATV) in the off-road environment.
+Lastly, we investigate into the deep inverse reinforcement learning (DIRL) algorithms that infer the cost, or traversability, of the unstructured terrain by leveraging a large volume of human demonstration data collected on the field. 
+We propose two slight modifications to overcome issues that arise from DIRL training, such as sparse gradients, and ambiguity of the demonstration optimality.
+% over the current approach \cite{wulfmeier2015maximum}, including explicitly modeling the ambiguity of the optimality, and integrating with failure demonstrations to overcome the spatially sparse gradient in DIRL training.
+This framework is tested on a full-size ATV in the off-road environment.
 
 %%% Future work %%%
 
@@ -31,7 +31,7 @@ Some interesting directions that merit further study include:
 	Construct a more complex vehicle model in 3D space for the model-based local planner, strengthen the collision map with more informative data such as mesh, or segmentation, and planner optimization with RRT tree maintenance.
 
 	\item
-	Extend the end-to-end framework to other environments such as real robotics systems, and other algorithms like GPS\cite{levine2013guided}, TRPO \cite{TRPO}, and Q-Prop \cite{DBLP:journals/corr/GuLGTL16}, etc.. Secondly, systematic investigation into problems such as how to augment the reward function for other important driving tasks like collision avoidance, and lane changing, and how to adaptively adjust the SD distribution during training. 
+	Extend the end-to-end framework to other environments such as real robotics systems, and other algorithms like GPS\cite{levine2013guided}, TRPO \cite{TRPO}, and Q-Prop \cite{DBLP:journals/corr/GuLGTL16}, etc. Secondly, systematic investigation into problems such as how to augment the reward function for other important driving tasks like collision avoidance, and lane changing, and how to adaptively adjust the SD distribution during training. 
 
 	\item
 	Increase the model complexity of DIRL framework to handle richer terrain textures, use continuous state IRL approaches like RE-IRL \cite{boularias2011relative} and path integral \cite{aghasadeghi2011maximum} to better handle vehicle constraints under extreme conditions like the sharp turning at intersections.
