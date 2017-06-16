@@ -121,7 +121,7 @@
 \pagestyle{empty}
 
 \title{ %% {\it \huge Thesis Proposal}\\ \\ \protect
-{\bf Motion Planning Approaches for Off-Road Autonomous Navigation in High Dimensional State Space}}
+{\bf Planning and Learning for Off-Road Autonomous Navigation in High Dimensional State Space}}
 \author{Guan-Horng Liu}
 \trnumber{CMU-RI-TR-17-37}
 \date{June 2017}
@@ -152,27 +152,26 @@ Devin Schwab
 \begin{abstract}
 
 % Recently, great strides have been made in the development of autonomous driving technologies, energized by the successful demonstrations by some teams at the DARPA Urban Challenge.
-While there is a foreseeable trend on operating autonomous driving technologies on-road within a decade, researchers have gained interests in solving extreme/aggressive motion planning in the off-road situations or unstructured terrain. 
-However, the high dimensional configuration space induced inevitably by a more complex vehicle model may break down traditional search-based algorithms with computational speed. 
-% TODO
-Alternatively, though end-to-end learning approaches have great potentials to handle high-dimensional state space, in the multi-sensor setting the learned policy may either rely heavily on all the inputs to the extent that it fails completely if a single sensor becomes unreliable, or become over-dependent on partial sensor subset, rendering sensor redundancy useless. 
-To be clear, in the space of end-to-end sensorimotor control, the sensor fusion outlook, as an indispensable technique to improve accuracy and robustness in a modern autonomous navigation system, has received limited attention. 
+% While there is a foreseeable trend on operating autonomous driving technologies on-road within a decade, researchers have gained interests in solving extreme/aggressive motion planning in the off-road situations or unstructured terrain. 
+% However, the high dimensional configuration space induced inevitably by a more complex vehicle model may break down traditional search-based algorithms with computational speed. 
+% Alternatively, though end-to-end learning approaches have a great potential to handle high-dimensional state space, in the multi-sensor setting the learned policy may either rely heavily on all the inputs to the extent that it fails completely if a single sensor becomes unreliable, or become over-dependent on partial sensor subset, rendering sensor redundancy useless. 
+% To be clear, in the space of end-to-end sensorimotor control, the sensor fusion outlook, as an indispensable technique to improve accuracy and robustness in a modern autonomous navigation system, has received limited attention. 
 
 % it provides no guarantees on the sensitivity of the trained policy on each sensor input.
 % the traditional search-based approach may break down once the motion planning shifts to high dimensional space, 
 % it operates more like a black box function approximator, and crucial properties such as sensitivity
 
 This thesis explores both traditional motion planning and end-to-end learning algorithms in the off-road settings.
-We propose an alternative RRT-based local planner for high-speed maneuvering in high dimensional state space.
-The local planner is modified to solve a minimal traveling-time trajectory problem subjected to a data-driven vehicle model.
-We also propose a novel stochastic regularization technique, called \textit{Sensor} \textit{Dropout}, to robustify end-to-end multimodal sensor policy learning outcomes. 
-Through empirical testing, we demonstrate that our proposed policy can operate with minimal performance drop in noisy environments, and remain functional even in the face of a sensor subset failure. 
-Moreover, the policy network is able to automatically infer the weight locations that provide salient information. 
-Lastly, we investigate into the deep inverse reinforcement learning (DIRL) algorithms that infer the traversability of the unstructured terrain by leveraging a large volume of human demonstration data collected on the field. 
-We propose several modifications 
+We summarize the main contributions as 1) propose an RRT-based local planner for high-speed maneuvering, 2) derive a novel stochastic regularization technique that robustifies end-to-end learning in the spirit of sensor fusion, and 3) traversability analysis of the unstructured terrain using deep inverse reinforcement learning (DIRL) algorithms. 
+We first propose a sample-based local planner that is modified to solve a minimal traveling-time trajectory problem subjected to a data-driven vehicle model in high dimensional state space.
+The planner is implemented on a full-size All-Terrain Vehicle (ATV), and the experimental results show that it can successfully avoid obstacles on a turnpike with the vehicle velocity up to the maximum operating speed.
+Secondly, we also propose a stochastic regularization technique, called \textit{Sensor} \textit{Dropout}, that promotes an effective fusing of information for end-to-end multimodal sensor policies. 
+Through empirical testings on a physical-based racing car simulator called \textit{TORCS}, we demonstrate that our proposed policies can operate with minimal performance drop in noisy environments, and remain functional even in the face of a sensor subset failure. 
+% Moreover, the policy network can automatically infer the weight locations that provide salient information. 
+Lastly, we investigate into the DIRL algorithms that infer the traversability of the unstructured terrain by leveraging a large volume of human demonstration data collected on the field. 
+We propose several modifications to overcome issues that arise from DIRL training, such as sparse gradients and ambiguity of the demonstration optimality.
+The framework is tested on the full-size ATV. 
 % over the current approach \cite{wulfmeier2015maximum} 
-to overcome issues that arise from DIRL training, such as sparse gradients, and ambiguity of the demonstration optimality.
-The efficacy of the proposed approaches is tested on a full-size All-Terrain Vehicle, and a physical-based racing car simulator called \textit{TORCS}. 
 % , including explicitly modeling the ambiguity of optimality, and integrating with failure demonstrations to overcome the spatially sparse gradient in DIRL training.
 % We show that the proposed planner can successfully avoid obstacles on a turnpike with vehicle velocity up to the maximum operating speed.
 
@@ -181,7 +180,6 @@ The efficacy of the proposed approaches is tested on a full-size All-Terrain Veh
 
 \begin{acknowledgments}
 
-% This thesis and my work in graduate school would not be possible without the collaboration and guidance of many intelligent people. 
 First, I would like to thank my advisor, Mr. George Kantor, for providing me advice, financial supports, and most importantly introducing me to the Yamaha ATV project that provides me a great opportunity to implement and test algorithms on the full-size autonomous vehicle.
 
 I would also like to thank all of the members in the Yamaha ATV project, especially Jay Hiramatsu who supports most of the field experiments I need to finish this thesis. I appreciate every valuable discussion with many intelligent students here: Po-Wei, Wei-Hsin, Daniel, Sai. Discussions with senior Ph.D. students: Avinash Siravuru, Hsiao Ming, Humphrey Hu, and Devin Schwab inspire me frequently. 
@@ -190,7 +188,7 @@ I would not make through my first year here without your help and collaborations
 % You help me catch up many most of the crucial knowledge especially in the first year of my master program.
 % , that greatly release my pressure of transferring research field from a more hardware mechanical engineer to software.
 
-Lastly, I would like to thank my parents for providing me sufficient resources and accesses to education in my life, and supporting most of my career decisions. I believe I owe so much to my girlfriend, Bonnie Chen, for supporting me over the two years of long distance during the master program. I would not make all those tough times through without you beside me.
+Lastly, I would like to thank my parents for providing me sufficient resources and accesses to education in my life, and supporting most of my career decisions. I believe I owe so much to Bonnie Chen, for supporting me over the two years of long distance during the master program. I would not make all those tough times through without you beside me.
 
   
 \end{acknowledgments}
