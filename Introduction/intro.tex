@@ -33,7 +33,7 @@ In this viewpoint, the motion planning module stands in a crucial position throu
 Furthermore, accurate yet efficient decisions need to be made with minimal computations.
 
 Recently, great strides have been made in the development of autonomous driving technologies, energized by the successful demonstrations by some teams at the DARPA Urban Challenge \cite{boss, multimodaltartan}.
-While there is a foreseeable trend on operating autonomous driving technologies on-road within a decade, researchers have gained interests in solving extreme/aggressive motion planning in the off-road situations or unstructured terrain \cite{kolter2010probabilistic,williams2016aggressive,gray2012predictive,cutler2016autonomous,cutler2014reinforcement}. 
+While there is a foreseeable trend on operating autonomous driving technologies on-road within a decade, researchers have gained interests in solving extreme/aggressive motion planning in the off-road situations or unstructured terrain \cite{williams2017information,kolter2010probabilistic,williams2016aggressive,gray2012predictive,cutler2016autonomous,cutler2014reinforcement}. 
 This thesis investigates both traditional motion planning and alternative end-to-end learning algorithms in the off-road settings.
 Specifically, we are interested in planning and learning approaches for unmanned ground vehicles in high-dimensional state space, which arise inevitably in traditional model-based planning approaches when using a more complex vehicle model, or in end-to-end learning algorithms that directly use raw sensor streams as its inputs.
 
@@ -143,7 +143,7 @@ Based on the Sensor Dropout, we further embedded the standard DRL loss with an a
 % As far as we know, we are the first to address the multimodal policy learning regarding sensor fusion.
  
 Note that both the traditional and the end-to-end planner require the cost/reward heuristic function to guide the policy and formally define the optimization problem. 
-However, unlike in the urban environment where cost function can be well defined in a rule-based structure, finding a cost function for off-road navigation can be non-trivial and often requires lots of handy tunings. \cite{silver2010learning}
+However, unlike in the urban environment where cost function can be well defined in a rule-based structure, finding a cost function for off-road navigation can be non-trivial and often requires lots of handy tunings \cite{silver2010learning}. 
 Here, motivated by the recent successes \cite{wulfmeier2015maximum,wulfmeier2016watch}, we also investigate into the using deep neural network as a function approximator to construct the cost/reward function under deep inverse reinforcement learning (DIRL) platform. 
 Again, we can leverage the availability to a large volume of task-specific data and solve the problem with minimal engineering hand-tunings.
  

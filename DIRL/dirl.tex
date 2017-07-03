@@ -9,7 +9,7 @@ Most of the robotics problems can be solved under optimization framework.
 For the motion planning problem, the objective is to find a sequence of control actions that minimizes the accumulated costs toward the goal state.
 Reinforcement learning, on the other hand, formulates the problem as finding a policy that maximizes the expected accumulated rewards collected from the environment.
 Both problems require a definition of the cost/reward function of the interested robotics tasks.
-However, unlike in the urban environment where cost function can be well defined in a rule-based structure, finding a cost function for off-road navigation can be non-trivial and often requires lots of handy tuning. \cite{silver2010learning}
+However, unlike in the urban environment where cost function can be well defined in a rule-based structure, finding a cost function for off-road navigation can be non-trivial and often requires lots of handy tunings \cite{silver2010learning}.
 Here, motivated by the recent successes \cite{wulfmeier2015maximum,wulfmeier2016watch} to using deep neural nets to approximate the cost functions, we implement a similar algorithm for the off-road application.
  
  
@@ -70,10 +70,13 @@ P_{\beta}(\xi_i | r_\theta) &= \frac{1}{Z_\beta} \exp \left( \beta r_\theta(\xi_
 \end{align}
  
 As $\beta$ increases, the exponent term dominates, and the corresponding distribution becomes sharper.
-If $\beta \to \infty$, the distribution degenerates to solving the $\arg\max$, \textit{i.e.} the optimal trajectory.
+If $\beta \to \infty$, the distribution degenerates to solving the $\arg\max$, \textit{i.e.} the optimal trajectory 
+$P(\xi_i | r_\theta)= \mathbbm{1}\left\{ \xi_i = \argmaxE_{\xi \in \Xi} r_\theta(\xi) \right\}  $.
 On the other hand, if $\beta \to 1$, the distribution becomes the same form of the one used in ME-IRL.
 In other words, the SSVM-like and CRF-like losses are framed under the same framework and can be seen as two special cases located at the opposite side of the spectrum.
- 
+$\beta \to 0 P(\xi_i | r_\theta)= uniform $
+
+
 This generalized loss introduces a new parameter $\beta$ that captures on which level of the \textit{optimality} is presented by the demonstration trajectories. By integrating this generalized loss in our computational graph, the parameter can be optimized jointly during training.
  
 \section{Experiments Results}

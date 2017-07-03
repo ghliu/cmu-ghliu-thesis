@@ -41,7 +41,7 @@ We denote a set of observations composed from $M$ sensors as, $S = [S^{(1)}~S^{(
 \begin{figure}[t]
         \begin{center}
 \centerline{\includegraphics[width=0.8\columnwidth]{./MultimodalDRL/fig/SD_new}} % sd
-        \caption{Illustration of multimodal sensor policy network augmented with Sensor Dropout. The operation $*$ stands for element-wised multiplication. The dropping configuration of Sensor Dropout is sampled from a categorical distribution, which the network takes as an additional input. The feature extraction module can be either pure identity function (modality $1$), or convolution-based layer (modality $2 \to M$). The operation $*$ stands for element-wised multiplication.}
+        \caption{Illustration of multimodal sensor policy network augmented with Sensor Dropout. The operation $*$ stands for element-wised multiplication. The dropping configuration of Sensor Dropout is sampled from a categorical distribution, which the network takes as an additional input. The feature extraction module can be either pure identity function (modality $1$), or convolution-based layer (modality $2 \to M$). The operation $\odot$ $*$ stands for element-wised multiplication.}
         \label{fig:Multi-SD}
         \end{center}
 \end{figure}
@@ -180,12 +180,12 @@ Note that for both algorithms, the final performance for multimodal sensor polic
 \begin{figure}[t]
     \centering
     \begin{subfigure}[b]{0.48\linewidth}
-        \includegraphics[width=\columnwidth,trim= 45 180 45 10, clip=true]{./MultimodalDRL/fig/actual_robust_naf}
+        \includegraphics[width=\columnwidth,trim= 40 180 45 10, clip=true]{./MultimodalDRL/fig/actual_robust_naf}
         \subcaption{NAF}
         \label{fig:actual_robust_naf}
     \end{subfigure}
     \begin{subfigure}[b]{0.48\linewidth}
-        \includegraphics[width=\columnwidth,trim= 45 180 45 10, clip=true]{./MultimodalDRL/fig/actual_robust_ddpg}
+        \includegraphics[width=\columnwidth,trim= 40 180 45 10, clip=true]{./MultimodalDRL/fig/actual_robust_ddpg}
         \subcaption{DDPG}
         \label{fig:actual_robust_ddpg}
     \end{subfigure}
@@ -196,12 +196,12 @@ Note that for both algorithms, the final performance for multimodal sensor polic
 \begin{figure}[t]
     \centering
     \begin{subfigure}[b]{0.48\linewidth}
-        \includegraphics[width=\columnwidth,trim= 45 180 45 25, clip=true]{./MultimodalDRL/fig/relative_robust_naf}
+        \includegraphics[width=\columnwidth,trim= 35 180 45 25, clip=true]{./MultimodalDRL/fig/relative_robust_naf}
         \subcaption{NAF}
         \label{fig:relative_robust_naf}
     \end{subfigure}
     \begin{subfigure}[b]{0.48\linewidth}
-        \includegraphics[width=\columnwidth,trim= 45 180 45 25, clip=true]{./MultimodalDRL/fig/relative_robust_ddpg}
+        \includegraphics[width=\columnwidth,trim= 35 180 45 25, clip=true]{./MultimodalDRL/fig/relative_robust_ddpg}
         \subcaption{DDPG}
         \label{fig:relative_robust_ddpg}
     \end{subfigure}

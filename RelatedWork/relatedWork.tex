@@ -44,7 +44,7 @@ As shown in Algorithm \ref{alg:RRT_star}, the new algorithm, named RRT*, preserv
   \caption{New Extend and Update Function in RRT*} \label{alg:RRT_star}
   \begin{algorithmic}[1]
   \State $x_{new} \leftarrow $ Extend($x_{nearest}, x_{sample}$)
-  \State $X_{min} \leftarrow $ LocalSearch($T, x_{nearest}$)
+  \State $X_{min} \leftarrow $ LocalSearch($T, x_{new}$)
   \State $x_{min} \leftarrow x_{nearest}$
   \ForEach {$x \in X_{min} $}
     \State $oldCost \leftarrow cost(x_{start},x_{nearest}) + cost(x_{nearest}, x_{new})$
@@ -224,6 +224,12 @@ In fact, the optimal policy is usually unknown, and the behavior may differ from
 Specifically, when the demonstrations are imperfect, or the planning algorithms capture only part of the relevant feature space, the resulting reward function from the previous approaches cannot perfectly describe the observed trajectories.
 In this light, \citet{ziebart2008maximum} reformulates the problem under the principle of maximum entropy.
 The resulting algorithm, known as maximum entropy IRL (ME-IRL), models the demonstrations with a stochastic policy by assuming the probability of executing of each trajectory being exponentially proportional to its total accumulated rewards.
+
+\begin{align}
+P(\xi_i | r_\theta) &= \frac{1}{Z} \exp \left( r_\theta(\xi_i) \right) \\
+\text{,where \quad} Z &= \sum_{\xi \in \Xi} \exp \left( r_\theta(\xi) \right) \text{is the normalization constant.}
+\end{align}
+
 The gradient of the objective function under linear reward function is simply the difference between the expected empirical feature counts and the learner's expected feature counts.
  
  

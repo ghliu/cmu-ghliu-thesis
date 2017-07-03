@@ -67,7 +67,7 @@
 \usepackage{multirow}
 % \usepackage{pbox}
 % \usepackage{enumitem}
-% \usepackage{bbm}
+\usepackage{bbm}
 % \usepackage{unicode-math}
 % % \usepackage[table,xcdraw]{xcolor}
 % \usepackage{xfrac}
@@ -98,6 +98,7 @@
 \newcommand{\measurementSet}{M}
 \newcommand{\totalWeight}{\mathcal{W}}
 \newcommand{\feature}{\mathcal{S}}
+\newcommand{\argmaxE}{\mathop{\mathrm{argmax}}}  
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
 \def\BState{\State\hskip-\ALG@thistlm}
@@ -121,7 +122,7 @@
 \pagestyle{empty}
 
 \title{ %% {\it \huge Thesis Proposal}\\ \\ \protect
-{\bf Planning and Learning for Off-Road Autonomous Navigation in High Dimensional State Space}}
+{\bf High Dimensional Planning and Learning \\ \protect for Off-Road Driving}}
 \author{Guan-Horng Liu}
 \trnumber{CMU-RI-TR-17-37}
 \date{June 2017}
@@ -129,7 +130,7 @@
 
 \committee{
 George Kantor, Chair \\
-Manuela Veloso \\
+Sebastian Scherer \\
 Devin Schwab 
 }
 
@@ -182,14 +183,14 @@ The framework is tested on the full-size ATV.
 
 First, I would like to thank my advisor, Mr. George Kantor, for providing me advice, financial supports, and most importantly introducing me to the Yamaha ATV project that provides me a great opportunity to implement and test algorithms on the full-size autonomous vehicle.
 
-I would also like to thank all of the members in the Yamaha ATV project, especially Jay Hiramatsu who supports most of the field experiments I need to finish this thesis. I appreciate every valuable discussion with many intelligent students here: Po-Wei, Wei-Hsin, Daniel, Sai. Discussions with senior Ph.D. students: Avinash Siravuru, Hsiao Ming, Humphrey Hu, and Devin Schwab inspire me frequently. 
+I would also like to thank all of the members in the Yamaha ATV project, especially Jay Hiramatsu who supports most of the field experiments I need to finish this thesis. I appreciate every valuable discussion with many intelligent students here: Po-Wei, Wei-Hsin, Daniel, Sai. Discussions with senior Ph.D. students: Avinash Siravuru, Ming Hsiao, Humphrey Hu, Yen-Chia Hsu, and Devin Schwab inspire me frequently. 
 I have big special thanks to Po-Wei Chou, both my project-mate and roommate, with whom I enjoy sharing my point of views and discuss. 
 I would not make through my first year here without your help and collaborations.
+I would also like to thank Ming Hsiao for helping me polish the speaking qualifier. 
 % You help me catch up many most of the crucial knowledge especially in the first year of my master program.
 % , that greatly release my pressure of transferring research field from a more hardware mechanical engineer to software.
 
 Lastly, I would like to thank my parents for providing me sufficient resources and accesses to education in my life, and supporting most of my career decisions. I believe I owe so much to Bonnie Chen, for supporting me over the two years of long distance during the master program. I would not make all those tough times through without you beside me.
-
   
 \end{acknowledgments}
 

@@ -213,7 +213,7 @@ With other advantages such as flexibility and extendibility, we use RRT as our p
  
 % RRT visualize
 Fig \ref{fig:rrt} visualizes the RRT tree. 
-Each node represents a $6$ DoF state, $q=[x,y, \theta ,v_{forward}, v_{sliding}, w]^T$. 
+Each node represents a $6$ DoF state, $q=[x,y, \theta ,v_{forward}, v_{sliding},$ $ w]^T$. 
 The first three terms represent the state in standard SE2 space, and the last three terms stand as the velocity in vehicle frame on a 2D plane. 
 For control space, we follow the convention used in Section \ref{sec:vehicle_model}, which includes $2DOF$ forward and angular velocity.
  
@@ -294,7 +294,7 @@ As shown in Fig. \ref{fig:viking}, the vehicle is equipped with the custom drive
  
 \begin{figure}[t]
     	\begin{center}
-    	 \centerline{\includegraphics[width=0.8\columnwidth]{./RRTPlanner/fig/simulate_vxvyw}}
+    	 \centerline{\includegraphics[width=0.8\columnwidth]{./RRTPlanner/fig/simulate_vxvywz}}
            	\caption{Simulated velocity response w.r.t. time steps. Note that the blue line is measured under an accurate GPS/INS sensor with RTK signal. We refer this measurement as our ground true data.}
            	\label{fig:velocity_simulate}
     	\end{center}
